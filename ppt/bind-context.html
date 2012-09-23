@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>统一hander上下文 - elem</title>
+        <style>
+        	p {
+        		background: gold;
+        		margin: 10px;
+        	}
+        </style>
+    </head>
+    <body>
+        <p>PPP</p>
+        <script>
+			function bind(elem, type, handler) {
+				function eventHandle() {
+					handler.call(elem)
+				}
+				if (elem.addEventListener) {
+					elem.addEventListener(type, eventHandle, false)
+				} else {
+					elem.attachEvent('on'+type, eventHandle)
+				}
+			}
+			
+			// 取dom元素
+			var p    = document.getElementsByTagName('p')[0],
+				body = document.body
+			
+			// 事件处理程序
+			function hander() {
+				alert(this)
+			}
+			
+			// 添加click事件
+			bind(p, 'click', hander)
+			
+        </script>
+    </body>
+</html>​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​

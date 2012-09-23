@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>event capturing</title>
+        <script>
+        function addEvent(el, type, hander, capture) {
+        	if (el.addEventListener) {
+        		el.addEventListener(type, hander, capture)
+        	}
+        }
+        
+        window.onload = function() {
+        	var div = document.getElementsByTagName('div')[0]
+        	var body = document.body
+        	var docElem = document.documentElement
+        	
+        	function fn() {alert('nodeType: ' + this.nodeType + '\ntagName: ' + this.tagName)}
+        	addEvent(div, 'click', fn, true)
+        	addEvent(body, 'click', fn, true)
+        	addEvent(docElem, 'click', fn, true)
+        	addEvent(document, 'click', fn, true)
+        }
+        </script>
+    </head>
+    <body>
+        <div>DIV</div>
+    </body>
+</html>​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​

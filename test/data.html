@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>传参给事件处理程序</title>
+		<script src="../e.js"></script>
+	</head>
+	<body>
+		<p id="p1" style="background:gold;">PPP</p>
+		<script>
+			var el = document.getElementById('p1')
+			
+			E.bind(el, 'click', {
+				data: [3, 5],
+				handler: function(e) {
+					console.log(e.data)
+				}
+			})
+		</script>
+	</body>	
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>仅执行一次的事件处理程序</title>
+		<script src="../e.js"></script>
+	</head>
+	<body>
+		<p id="p1" style="background:gold;">PPP</p>
+		<script>
+			var el = document.getElementById('p1')
+			
+			E.bind(el, 'click', {
+				once: true,
+				handler: function() {
+					console.log('Only call once')
+				}
+			})
+		</script>
+	</body>	
+</html>

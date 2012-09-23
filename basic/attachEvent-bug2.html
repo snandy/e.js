@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>attachEvent在IE6/7/8下添加同一个类型事件的多个handler执行无序</title>
+	</head>
+	<body>
+		<div id="d1" style="width:200px;height:200px;background:gold;"></div> 
+		<script type="text/javascript"> 
+		    function addEvent(el, type, fn){ 
+		        if(el.addEventListener){ 
+		            el.addEventListener(type, fn, false); 
+		        }else{ 
+		            el.attachEvent('on' + type, fn); 
+		        } 
+		    } 
+		    var el = document.getElementById('d1'); 
+		    function handler1(){ 
+		        alert('test1'); 
+		    } 
+		    function handler2(){ 
+		        alert('test2'); 
+		    } 
+		    function handler3(){ 
+		        alert('test3'); 
+		    } 
+		    function handler4(){ 
+		        alert('test4'); 
+		    } 
+		    function handler5(){ 
+		        alert('test5'); 
+		    } 
+		    addEvent(el, 'click', handler1); 
+		    addEvent(el, 'click', handler2); 
+		    addEvent(el, 'click', handler3); 
+		    addEvent(el, 'click', handler4); 
+		    addEvent(el, 'click', handler5); 
+		</script>
+	</body>	
+</html>

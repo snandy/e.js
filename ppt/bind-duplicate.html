@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>和低版本IE一致 - 重复handler不去重</title>
+        <style>
+        	p {
+        		background: gold;
+        		margin: 10px;
+        	}
+        </style>
+    </head>
+    <body>
+        <p>PPP</p>
+        
+        <script>
+			function bind(elem, type, handler) {
+				function eventHandle() {
+					handler()
+				}
+				if (elem.addEventListener) {
+					elem.addEventListener(type, eventHandle, false)
+				} else {
+					elem.attachEvent('on'+type, eventHandle)
+				}
+			}
+			
+			// 取dom元素
+			var p    = document.getElementsByTagName('p')[0]
+			
+			// 事件处理程序
+			function handler() {
+				console.log('click')
+			}
+			
+			// 添加两次click事件，相同handler
+			bind(p, 'click', handler)
+			bind(p, 'click', handler)
+			
+        </script>
+    </body>
+</html>​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​

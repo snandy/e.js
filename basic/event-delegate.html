@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<button id="help-btn">HELP</button>
+		<button id="save-btn">SAVE</button>
+		<button id="undo-btn">UNDO</button>
+		<script>
+			document.onclick = function( ev ) {
+				var ev= ev || window.event;
+				var target = ev.target || ev.srcElement;
+			
+				if(target.id == 'help-btn'){
+					alert('help')
+				}
+				if(target.id == 'save-btn'){
+					alert('save')
+				}
+				if(target.id == 'undo-btn'){
+					alert('undo')
+				}
+			}
+			
+			var helpbtn = document.getElementById('help-btn')
+			setTimeout(function() {
+				helpbtn.click()
+			}, 2000)
+		</script>
+	</body>	
+</html>
+
+
+

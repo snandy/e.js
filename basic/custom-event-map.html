@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<title>Sogou Maps JavaScript Event </title>
+	<style type="text/css">
+	html{height:100%}
+	body{height:100%;margin:0px;padding:0px}
+	#map_canvas{height:100%}
+	</style>
+	<script type="text/javascript" src="http://api.go2map.com/maps/js/api_v2.5.1.js"></script>
+	<script type="text/javascript">
+	  function initialize() {
+	    var myLatlng = new sogou.maps.LatLng(39.99226610365429,116.32591408950312);
+	    var myOptions = {
+	      'zoom': 17,
+	      'center': myLatlng,
+	      'mapTypeId': sogou.maps.MapTypeId.ROADMAP
+	    }
+	    var map = new sogou.maps.Map(document.getElementById("map_canvas"), myOptions);
+	    sogou.maps.event.addListener(map, 'click', function(e) {
+	    	alert('sogou map event')
+	 	    // console.log(e.__proto__)
+	    	// console.log(e.point)
+	    })
+	  }
+	</script>
+</head>
+<body onload="initialize()">
+  <div id="map_canvas"></div>
+</body>
+</html>

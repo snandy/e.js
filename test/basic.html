@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>基本事件添加</title>
+		<script src="../e.js"></script>
+	</head>
+	<body>
+		<p id="p1" style="background:gold;">PPP</p> 
+		<script>
+			var el = document.getElementById('p1')
+			
+			// 简单的事件添加
+			E.bind(el, 'click', function() {
+				console.log('click')
+			})
+			
+			// handler上下文为el
+			E.bind(el, 'click', function() {
+				console.log(this)
+			})
+			
+			// 获取事件对象
+			E.bind(el, 'click', function(e) {
+				console.log(e.type)
+			})
+			
+			// 获取事件源对象
+			E.bind(el, 'click', function(e) {
+				console.log(e.target)
+			})
+			
+			// 阻止事件流传播
+			E.bind(el, 'click', function(e) {
+				e.stopPropagation()
+			})
+			
+			// 阻止元素默认行为
+			E.bind(el, 'click', function(e) {
+				e.preventDefault()
+			})
+			
+		</script>
+	</body>	
+</html>

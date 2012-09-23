@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>自定义事件实例</title>
+	</head>
+	<body>
+		<button id="name-btn">修改名字</button>
+		<button id="age-btn">修改年龄</button>
+		<p style="background: gray;font-size: 30px"></p>
+		<script>
+			function Person(name, age) {
+				this.name = name
+				this.age  = age
+			}
+			Person.prototype.setName = function(name) {
+				this.name = name
+				if (this.onnamechange) {
+					console.log('name is modified for ' + name)
+					this.onnamechange()
+				}
+			}
+			Person.prototype.getName = function() {
+				return this.name
+			}
+			Person.prototype.setAge = function(age) {
+				this.age = age
+				if (this.onagechange) {
+					console.log('age is modified for ' + age)
+					this.onagechange()
+				}
+			}
+			Person.prototype.getAge = function() {
+				return this.age	
+			}
+			
+			// 创建类Person的一个实例对象
+			var person = new Person('jack', 20)
+			// 添加namechange事件
+			person.onnamechange = function() {
+				var p = document.getElementsByTagName('p')[0]
+				p.innerHTML = 'name is modified for <span style="color:red">' + this.name + '</span>'
+				p.style.display = 'block'
+				setTimeout(function() {
+					p.style.display = 'none'
+				}, 5000)
+			}
+			person.onagechange = function() {
+				var p = document.getElementsByTagName('p')[0]
+				p.innerHTML = 'age is modified for <span style="color:red">' + this.age + '</span>'
+				p.style.display = 'block'
+				setTimeout(function() {
+					p.style.display = 'none'
+				}, 5000)
+			}
+			
+			// 页面按钮添加点击事件，设置person的name
+			var namebtn = document.getElementById('name-btn')
+			var agebtn  = document.getElementById('age-btn')
+			namebtn.onclick = function() {
+				person.setName('lily')
+			}
+			agebtn.onclick = function() {
+				person.setAge(25)
+			}
+		</script>
+	</body>	
+</html>
+
+
+

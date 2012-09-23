@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>event bubbling</title>
+        <script>
+        window.onload = function() {
+        	var div = document.getElementsByTagName('div')[0]
+        	var body = document.body
+        	var docElem = document.documentElement
+        	
+        	function fn() {
+        		if (this.nodeType) {
+        			alert('nodeType: ' + this.nodeType + '\ntagName: ' + this.tagName)
+        		} else {
+        			alert(this)
+        		}
+        	}
+        	// 依次div，body，documentElement，document
+        	div.onclick =
+        	body.onclick =
+        	docElem.onclick =
+        	document.onclick = fn
+        	
+        	// FF,Chrome,Safari, Opera一直冒泡到window
+        	window.onclick = fn
+        }
+        </script>
+    </head>
+    <body>
+        <div>DIV</div>
+    </body>
+</html>​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​

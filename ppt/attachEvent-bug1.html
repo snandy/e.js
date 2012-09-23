@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>attachEvent在IE6/7/8中添加同一个事件handler多次触发后会执行多次</title>
+	</head>
+	<body>
+		<div id="d1" style="width:200px;height:200px;background:gold;"></div> 
+		<script>
+			function bind(elem, type, handler) {
+				if (elem.addEventListener) {
+					elem.addEventListener(type, handler, false)
+				} else {
+					elem.attachEvent('on'+type, handler)
+				}
+			}
+			
+		    function handler() { 
+		        console.log('clicked') 
+		    } 
+		    var el = document.getElementById('d1')
+		    bind(el, 'click', handler)
+		    bind(el, 'click', handler)
+		</script>
+	</body>	
+</html>

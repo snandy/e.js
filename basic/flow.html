@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>阻止事件流的传播</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+    	<div>DIV</div>
+    	<script>
+			var div = document.getElementsByTagName('div')[0]
+			var body = document.body    	
+    		function addEvent(el, type, hander) {
+    			if (el.addEventListener) {
+    				el.addEventListener(type, hander, false)
+    			} else {
+    				el.attachEvent('on'+type, hander)
+    			}
+    		}
+			function fn(e) {
+				console.log(e.cancelBubble)
+				if (e.stopPropagation) {
+					e.stopPropagation()
+				} else {
+					e.cancelBubble = true
+				}
+				if (this.nodeType) {
+					alert('nodeType: ' + this.nodeType + ', tagName: ' + this.tagName)
+				} else {
+					alert(this)
+				}
+			}
+			
+			// div.onclick = body.onclick = document.onclick = window.onclick = fn			addEvent(div, 'click', fn)
+			addEvent(body, 'click', fn)
+			addEvent(document, 'click', fn)
+			addEvent(window, 'click', fn)
+    	</script>
+    </body>
+</html>

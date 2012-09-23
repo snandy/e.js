@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>添加事件</title>
+        <meta charset="utf-8">
+        <style>
+        	div {
+        		background: gold;
+        		margin: 10px;
+        	}
+        </style>
+    </head>
+    <body>
+    	<!-- 内联事件代码 -->
+    	<div id="d1" onclick="alert(this.innerHTML)">DIV1</div>
+    	<!-- 内联一个函数 -->
+    	<div id="d2" onclick="fn2()">DIV2</div>
+    	<!-- DOM 0 -->
+    	<div id="d3">DIV3</div>
+    	<!-- DOM 2 or IE6/7/8 -->
+    	<div id="d4">DIV4</div>
+    	
+    	
+    	<script>
+    		function $(id) {return document.getElementById(id)}
+    		
+			var d1 = $('d1'), d2 = $('d2'), d3 = $('d3'), d4 = $('d4')
+			
+    		function fn2() {
+    			alert('DIV2')
+    		}
+    		function fn3() {
+    			alert('DIV3')
+    		}
+    		function fn4() {
+    			alert('DIV4')
+    		}
+    		
+    		// DOM 0 (All Browsers)
+    		d3.onclick = fn3
+    		
+    		// DOM 2 (IE9/10, FF, Safari, Chrome, Opera)
+    		try {
+    			d4.addEventListener('click', fn4, false)
+    		} catch(e) {}
+			
+			// IE6/7/8
+			try {
+				d4.attachEvent('onclick', fn4)
+			}catch(e){}
+
+    	</script>
+    </body>
+</html>

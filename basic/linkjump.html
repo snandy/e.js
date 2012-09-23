@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>模拟IE低版本自定义事件</title>
+        <meta charset="utf-8">
+        <style>
+        	div {
+        		background: gold;
+        		margin: 10px;
+        	}
+        </style>
+    </head>
+    <body>
+		<a id="a1" href="http://mail.sina.com.cn">新浪邮箱</a>
+		<script>
+		    var a1 = document.getElementById('a1')
+		    setTimeout(function() {
+		    	a1.click()
+		    }, 5000)
+		    
+		</script>
+    </body>
+</html>

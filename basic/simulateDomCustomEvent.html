@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>模拟DOM自定义事件</title>
+        <meta charset="utf-8">
+        <style>
+        	div {
+        		background: gold;
+        		margin: 10px;
+        	}
+        </style>
+    </head>
+    <body>
+		<!-- 内联事件代码 -->
+		<div id="d1" onmyevent="alert(this)">DIV1</div>
+    	<script>
+    		function $(id) {return document.getElementById(id)}
+    		function hander(event) {
+    			alert(event.detail + this.tagName + '')
+    		}
+			var div = $('d1'), customEvent
+			
+			div.onmyevent = function(){alert('DOM 0')}
+			div.addEventListener('myevent', hander, false)
+			document.body.addEventListener('myevent', hander, false)
+			
+			try {
+				customEvent = document.createEvent('CustomEvent')
+				customEvent.initCustomEvent('myevent', true, false, 'Hello, ')
+				div.dispatchEvent(customEvent)
+			} catch(e) {
+				// 仅IE6/7/8不支持
+				alert('Don\'t support DOM CustomEvent')
+			}
+    	</script>
+    </body>
+</html>
