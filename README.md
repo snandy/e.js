@@ -110,8 +110,15 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	</pre>
 
 + 阻止频繁调用(resize, scroll)
-
-
+	<pre>
+	E.bind(window, 'scroll', {
+		debounce: 100,
+		handler: function() {
+			console.log('test')
+		}
+	})
+	</pre>
+	
 + 阻止元素默认行为
 	<pre>
 	E.bind(el, 'click', {
