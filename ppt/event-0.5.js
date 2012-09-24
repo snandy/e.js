@@ -4,7 +4,7 @@
  * 2, 统一事件对象作为handler第一个参数传入（attachEvent作为全局对象event）
  * 3, 统一多个handler执行顺序（attachEvent逆序）
  * 4, 解决事件对象兼容性（与W3C统一）
- * 5, handler执行模式配置: once/delay/debounce/scope/stop/prevent/stopBubble
+ * 5, handler执行模式配置: once/delay/debounce/context/stop/prevent/stopBubble
  * 6, handler传额外参数（非事件对象）
  * 7, 事件对象加data属性
  * 8, type支持以空格添加多个事件，如'mouseover mouseout'
@@ -119,12 +119,16 @@ function callback(elem, type, e, handlerObj) {
 		debounce  = handlerObj.debounce,
 		handler   = handlerObj.handler,
 		prevent   = handlerObj.prevent,
-		scope     = handlerObj.scope || elem,
+		context   = handlerObj.context || elem,
 		stopBubble = handlerObj.stopBubble
 	
-	// 事件对象插入到数组第一个位置
-	args.unshift(e)
-	//args.splice(0, 0, e)
+	// 如果数组第一个元素不是事件对象，将事件对象插入到数组第一个位置; 如果是则用新的事件对象替换
+	if (args[0] && args[0].type === e.type) {
+		args.shift()
+		args.unshift(e)
+	} else {
+		args.unshift(e)
+	}
 	
 	if (stop) {
 		e.preventDefault()
@@ -145,10 +149,10 @@ function callback(elem, type, e, handlerObj) {
 	
 	if (delay) {
 		util.delay(function() {
-			handler.apply(scope, args)
+			handler.apply(context, args)
 		}, delay)
 	} else {
-		handler.apply(scope, args)
+		handler.apply(context, args)
 	}
 	
 	if (once) {
@@ -161,7 +165,7 @@ function Handler(config) {
 	this.once     = config.once
 	this.delay    = config.delay
 	this.debounce = config.debounce
-	this.scope    = config.scope
+	this.context  = config.context
 	this.stop     = config.stop
 	this.prevent  = config.prevent
 	this.stopBubble = config.stopBubble

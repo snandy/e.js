@@ -4,17 +4,19 @@
  * 2, 统一事件对象作为handler第一个参数传入（attachEvent作为全局对象event）
  * 3, 统一多个handler执行顺序（attachEvent逆序）
  * 4, 解决事件对象兼容性（与W3C统一）
- * 5, handler执行模式配置: once/delay/debounce/scope/stop/prevent/stopBubble
+ * 5, handler执行模式配置: once/delay/debounce/throttle/context/stop/prevent/stopBubble
  * 6, handler传额外参数（非事件对象）
  * 7, 事件对象加data属性
  * 8, type支持以空格添加多个事件，如'mouseover mouseout'
  * 9, 第二个参数type为对象类型时批量添加
+ * 10, handler执行模式once、delay等实现方式更改
+ * 
  * 
  * 重构点：
  * 1, 勿重复检测浏览器
  * 2, 代码尽量不出现横向滚动条
  * 3, 接口bind, unbind, trigger各加别名on, un, fire
- * 4, 增加AMD的支持
+ * 4, AMD的支持
  * 
  */
 
@@ -54,34 +56,67 @@ util = {
 	isObject: function(obj) {
 		return obj === Object(obj)
 	},
+	once: function(func) {
+		var run, memo
+		return function() {
+			if (run) return memo
+			run = true
+			return memo = func.apply(this, arguments)
+		}
+	},
 	delay: function(func, wait) {
 		return function() {
-			var scope = this, args = arguments
+			var context = this, args = arguments
 			setTimeout(function() {
-				func.apply(scope, args)
+				func.apply(context, args)
 			}, wait)
 		}
 	},
 	debounce: function(func, wait) {
 		var timeout
 		return function() {
-			var scope = this, args = arguments
+			var context = this, args = arguments
 			later = function() {
 				timeout = null
-				func.apply(scope, args)
+				func.apply(context, args)
 			}
 			clearTimeout(timeout)
 			timeout = setTimeout(later, wait)
 		}
 	},
-	addListener: function(){
+	throttle: function(func, wait) {
+		var context, args, timeout, throttling, more, result
+		var whenDone = util.debounce(function(){ more = throttling = false }, wait)
+		return function() {
+			context = this, args = arguments
+			var later = function() {
+				timeout = null
+				if (more) {
+					func.apply(context, args)
+				}
+				whenDone()
+			};
+			if (!timeout) {
+				timeout = setTimeout(later, wait)
+			}
+			if (throttling) {
+				more = true
+			} else {
+				result = func.apply(context, args)
+			}
+			whenDone()
+			throttling = true
+			return result
+		}
+	},
+	addListener: function() {
 		if (w3c) {
 			return function(el, type, handler) { el.addEventListener(type, handler, false) } 
 		} else {
 			return function(el, type, handler) { el.attachEvent('on' + type, handler) }
 		}
 	}(),
-	removeListener: function(){
+	removeListener: function() {
 		if (w3c) {
 			return function(el, type, handler) { el.addEventListener(type, handler, false) }
 		} else {
@@ -110,26 +145,25 @@ function eventHandler(elem, e) {
 		handlers = events[type]
 		
 	for (var i=0, handlerObj; handlerObj = handlers[i++];) {
-		if ( callback(elem, type, e, handlerObj) === true) {
-			i--
-		}
+		callback(elem, type, e, handlerObj)
 	}
 }
 function callback(elem, type, e, handlerObj) {
 	var args      = handlerObj.args,
-		once      = handlerObj.once,
 		stop      = handlerObj.stop,
 		data      = handlerObj.data,
-		delay     = handlerObj.delay,
-		debounce  = handlerObj.debounce,
 		handler   = handlerObj.handler,
 		prevent   = handlerObj.prevent,
-		scope     = handlerObj.scope || elem,
+		context   = handlerObj.context || elem,
 		stopBubble = handlerObj.stopBubble
 	
-	// 事件对象插入到数组第一个位置
-	args.unshift(e)
-	//args.splice(0, 0, e)
+	// 如果数组第一个元素不是事件对象，将事件对象插入到数组第一个位置; 如果是则用新的事件对象替换
+	if (args[0] && args[0].type === e.type) {
+		args.shift()
+		args.unshift(e)
+	} else {
+		args.unshift(e)
+	}
 	
 	if (stop) {
 		e.preventDefault()
@@ -148,19 +182,15 @@ function callback(elem, type, e, handlerObj) {
 		e.stopPropagation()
 	}
 	
-	handler.apply(scope, args)
-	
-	if (once) {
-		unbind(elem, type, handler)
-		return true
-	}
+	handler.apply(context, args)
 }
 function Handler(config) {
 	this.handler  = config.handler
 	this.once     = config.once
 	this.delay    = config.delay
 	this.debounce = config.debounce
-	this.scope    = config.scope
+	this.throttle = config.throttle
+	this.context  = config.context
 	this.stop     = config.stop
 	this.prevent  = config.prevent
 	this.stopBubble = config.stopBubble
@@ -291,14 +321,25 @@ function bind(elem, type, handler) {
 		handlerObj = new Handler(handler)
 	}
 	
-	// 延迟执行
+	// once 仅执行一次
+	if (handlerObj.once) {
+		handlerObj.handler = util.once(handlerObj.handler)
+	}
+	
+	// delay延迟执行
 	if (handlerObj.delay) {
 		handlerObj.handler = util.delay(handlerObj.handler, handlerObj.delay)
 	}
-	// 防弹跳
+	// debounce防弹跳
 	if (handlerObj.debounce) {
 		handlerObj.handler = util.debounce(handlerObj.handler, handlerObj.debounce)
 	}
+	
+	// throttle
+	if (handlerObj.throttle) {
+		handlerObj.handler = util.throttle(handlerObj.handler, handlerObj.throttle)
+	}
+	
 	
 	// 初始化events
 	if (!events) {

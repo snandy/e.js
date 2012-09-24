@@ -88,28 +88,8 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 		}
 	})
 	</pre>
-	
-+ 改变默认执行上下文
-	<pre>
-	E.bind(el, 'click', {
-		scope: document,
-		handler: function() {
-			console.log(this===document) // true
-		}
-	})
-	</pre>
-	
-+ 停止事件流传播
-	<pre>
-	E.bind(el, 'click', {
-		stopBubble: true,
-		handler: function() {
-			console.log('Stop event bubble')
-		}
-	})
-	</pre>
 
-+ 阻止频繁调用(resize, scroll)
++ 阻止频繁调用(resize, scroll, mousemove) 不足指定debounce时间时会clearTimeout上次的handler
 	<pre>
 	E.bind(window, 'scroll', {
 		debounce: 100,
@@ -118,7 +98,27 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 		}
 	})
 	</pre>
+
++ 事件节流(resize, scroll, mousemove) 当handler被频繁调用时如scroll，可强制指定调用间隔时间，比如100毫秒
+	<pre>
+	E.bind(window, 'scroll', {
+		throttle: 100,
+		handler: function() {
+			console.log('test')
+		}
+	})
+	</pre>
 	
++ 改变默认执行上下文
+	<pre>
+	E.bind(el, 'click', {
+		context: document,
+		handler: function() {
+			console.log(this===document) // true
+		}
+	})
+	</pre>
+		
 + 阻止元素默认行为
 	<pre>
 	E.bind(el, 'click', {
@@ -129,6 +129,16 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	})
 	</pre>
 
++ 停止事件流传播
+	<pre>
+	E.bind(el, 'click', {
+		stopBubble: true,
+		handler: function() {
+			console.log('Stop event bubble')
+		}
+	})
+	</pre>
+	
 + 停止事件流传播，阻止元素默认行为
 	<pre>
 	E.bind(el, 'click', {
