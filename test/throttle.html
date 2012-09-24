@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>事件节流</title>
+		<script src="../e.js"></script>
+	</head>
+	<body style="height: 5000px">
+		<script>
+			E.bind(window, 'scroll', {
+				throttle: 100, // 换成0或10即可看出差别
+				handler: function() {
+					console.log('test')
+				}
+			})
+		</script>
+	</body>	
+</html>
