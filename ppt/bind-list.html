@@ -27,7 +27,7 @@
 		        alert(e.data); 
 		    }
 		    //E.bind(el, 'click', handler1); 
-		    //E.bind(el, 'click', {handler: handler2, once: true}); 
+		    E.bind(el, 'click', {handler: handler2, once: true}); 
 		    // E.bind(el, 'click', {
 		    	// delay: 3000,
 		    	// args: [1,3],
@@ -43,12 +43,12 @@
 		    // })
 			// E.bind(el, 'click mouseover', handler1)
 			i = 0
-			E.bind(window, 'scroll', {
-				throttle: 100,
-				handler: function() {
-					console.log(i++)
-				}
-			})
+			// E.bind(window, 'scroll', {
+				// throttle: 1000,
+				// handler: function() {
+					// console.log(i++)
+				// }
+			// })
 		
 		</script>
 	</body>	

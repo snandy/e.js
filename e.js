@@ -27,11 +27,9 @@
 // variables -------------------------------------------------------------------------------------
 var // 每个element上绑定的一个唯一属性，递增
 	guid = 1,
-	
 	// 存放所有事件handler, 以guid为key, cache[1] = {}
 	// cache[1] = {handle: evnetHandle, events: {}}, events = {click: [handler1, handler2, ..]}
 	cache = {},
-	
 	// 优先使用标准API
 	w3c = !!window.addEventListener,
 	
@@ -97,7 +95,7 @@ util = {
 					func.apply(context, args)
 				}
 				whenDone()
-			};
+			}
 			if (!timeout) {
 				timeout = setTimeout(later, wait)
 			}
@@ -305,7 +303,7 @@ function bind(elem, type, handler) {
 		handle = elData.handle,
 		handlerObj, eventType, i=0, arrType
 	
-	// 批量添加
+	// 批量添加, 递归
 	if ( util.isObject(type) ) {
 		for (eventType in type) {
 			bind(elem, eventType, type[eventType])
@@ -323,25 +321,26 @@ function bind(elem, type, handler) {
 		handlerObj = new Handler(handler)
 	}
 	
+	handler = handlerObj.handler
+	
 	// once 仅执行一次
 	if (handlerObj.once) {
-		handlerObj.handler = util.once(handlerObj.handler)
+		handlerObj.handler = util.once(handler)
 	}
 	
 	// delay延迟执行
 	if (handlerObj.delay) {
-		handlerObj.handler = util.delay(handlerObj.handler, handlerObj.delay)
+		handlerObj.handler = util.delay(handler, handlerObj.delay)
 	}
 	// debounce防弹跳
 	if (handlerObj.debounce) {
-		handlerObj.handler = util.debounce(handlerObj.handler, handlerObj.debounce)
+		handlerObj.handler = util.debounce(handler, handlerObj.debounce)
 	}
 	
-	// throttle
+	// throttle 事件节流
 	if (handlerObj.throttle) {
-		handlerObj.handler = util.throttle(handlerObj.handler, handlerObj.throttle)
+		handlerObj.handler = util.throttle(handler, handlerObj.throttle)
 	}
-	
 	
 	// 初始化events
 	if (!events) {
@@ -366,7 +365,6 @@ function bind(elem, type, handler) {
 			handlers = events[eventType] = []
 			util.addListener(elem, eventType, handle)
 		}
-		
 		// 添加到数组
 		handlers.push(handlerObj)
 	}
