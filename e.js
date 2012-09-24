@@ -181,6 +181,7 @@ function callback(elem, type, e, handlerObj) {
 	
 	handler.apply(context, args)
 }
+// handlerObj class
 function Handler(config) {
 	this.handler  = config.handler
 	this.once     = config.once
@@ -194,7 +195,6 @@ function Handler(config) {
 	this.args       = config.args || []
 	this.data       = config.data
 }
-
 // 删除事件的注册，从缓存中去除
 function remove(elem, type, guid) {
 	var elData = cache[guid],
@@ -430,6 +430,13 @@ var E = {
 	},
 	getGuid: function() {
 		return guid
+	},
+	destroy: function() {
+		for (var num in cache) {
+			var elData = cache[num], elem   = elData.elem
+			unbind(elem)
+		}
+		guid = 1
 	}
 }
 	

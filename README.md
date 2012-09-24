@@ -1,7 +1,39 @@
 e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handler上下文为window，事件对象为全局的event。
 阻止事件传播方式，元素默认行为等也与标准浏览器不同，attachEvent添加多个handler时执行逆序等。修复了事件对象，使用符合w3c标准的统一的方式操作。
 
-提供多种方式添加事件，可对事件handler的行为进行特殊控制。如仅执行一次，延迟执行，给其传非事件对象参数，数据对象等。
+提供多种方式添加事件，可对事件handler的行为进行特殊控制。如仅执行一次、延迟执行、事件节流、给其传非事件对象参数、数据对象等。
+
+## API
++ 添加事件E.bind, 别名E.on
+	<pre>
+	E.bind(elem, type, handler)
+	</pre>
+	
++ 删除事件E.unbind, 别名E.un
+	<pre>
+	E.unbind(elem, type, handler)
+	</pre>
+
++ 派发事件E.trigger, 别名E.fire
+	<pre>
+	E.trigger(elem, type)
+	</pre>
+
++ 获取事件管理对象cache
+	<pre>
+	E.getCache()
+	</pre>
+
++ 获取事件管理的GUID, 查看已添加事件的DOM元素数量
+	<pre>
+	E.getGuid()
+	</pre>
+	
++ 销毁所有的事件handler, 如在页面unload时. (谨慎操作)
+	<pre>
+	E.destroy()
+	</pre>	
+
 
 ## 常见操作
 + 简单事件添加

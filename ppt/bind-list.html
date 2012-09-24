@@ -43,12 +43,12 @@
 		    // })
 			// E.bind(el, 'click mouseover', handler1)
 			i = 0
-			// E.bind(window, 'scroll', {
-				// throttle: 1000,
-				// handler: function() {
-					// console.log(i++)
-				// }
-			// })
+			E.bind(window, 'scroll', {
+				throttle: 1000,
+				handler: function() {
+					console.log(i++)
+				}
+			})
 		
 		</script>
 	</body>	
