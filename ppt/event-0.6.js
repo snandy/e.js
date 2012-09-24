@@ -70,16 +70,18 @@ util = {
 			}, wait)
 		}
 	},
-	debounce: function(func, wait) {
+	debounce: function(func, wait, immediate) {
 		var timeout
 		return function() {
 			var context = this, args = arguments
 			later = function() {
 				timeout = null
-				func.apply(context, args)
+				if (!immediate) func.apply(context, args)
 			}
+			var callNow = immediate && !timeout
 			clearTimeout(timeout)
 			timeout = setTimeout(later, wait)
+			if (callNow) func.apply(context, args)
 		}
 	},
 	throttle: function(func, wait) {
@@ -183,14 +185,15 @@ function callback(elem, type, e, handlerObj) {
 }
 // handlerObj class
 function Handler(config) {
-	this.handler  = config.handler
-	this.once     = config.once
-	this.delay    = config.delay
-	this.debounce = config.debounce
-	this.throttle = config.throttle
-	this.context  = config.context
-	this.stop     = config.stop
-	this.prevent  = config.prevent
+	this.handler   = config.handler
+	this.once      = config.once
+	this.delay     = config.delay
+	this.debounce  = config.debounce
+	this.immediate = config.immediate
+	this.throttle  = config.throttle
+	this.context   = config.context
+	this.stop      = config.stop
+	this.prevent   = config.prevent
 	this.stopBubble = config.stopBubble
 	this.args       = config.args || []
 	this.data       = config.data
@@ -329,9 +332,15 @@ function bind(elem, type, handler) {
 	if (handlerObj.delay) {
 		handlerObj.handler = util.delay(handler, handlerObj.delay)
 	}
+	
 	// debounce防弹跳
 	if (handlerObj.debounce) {
 		handlerObj.handler = util.debounce(handler, handlerObj.debounce)
+	}
+	
+	// immediate 执行后立即延迟指定时间，如避免重复提交
+	if (handlerObj.immediate) {
+		handlerObj.handler = util.debounce(handler, handlerObj.immediate, true)
 	}
 	
 	// throttle 事件节流

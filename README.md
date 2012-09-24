@@ -121,10 +121,20 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	})
 	</pre>
 
-+ 阻止频繁调用(resize, scroll, mousemove) 不足指定debounce时间时会clearTimeout上次的handler
++ 阻止handler频繁调用(resize, scroll, mousemove) 不足指定debounce时间时会clearTimeout上次的handler
 	<pre>
 	E.bind(window, 'scroll', {
 		debounce: 100,
+		handler: function() {
+			console.log('test')
+		}
+	})
+	</pre>
+
++ 与上面类似, 不同在于handler会立刻执行(如click提交点击太快造成提交多次)
+	<pre>
+	E.bind(window, 'scroll', {
+		immediate: 1000,
 		handler: function() {
 			console.log('test')
 		}

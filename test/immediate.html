@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>阻止事件程序频繁调用</title>
+		<script src="../e.js"></script>
+	</head>
+	<body style="height: 5000px">
+		<button>submit</button>
+		<script>
+			var btn = document.getElementsByTagName('button')[0]
+			E.bind(btn, 'click', {
+				immediate: 1000,
+				handler: function() {
+					console.log('Don\'t submit again')
+				}
+			})
+		</script>
+	</body>	
+</html>
