@@ -3,14 +3,14 @@
 	<head>
 		<meta charset="utf-8"/>
 		<title>统一多handler执行顺序</title>
-		<script src="event-0.6.js"></script>
+		<script src="event-0.7.js"></script>
 	</head>
 	<body style="height:9000px">
 		<div id="d1" style="width:200px;height:200px;background:gold;"></div> 
 		<script>
 		    var el = document.getElementById('d1'); 
 		    function handler1(e){ 
-		        console.log(e.target);
+		        alert(e.target.tagName);
 		    } 
 		    function handler2(){ 
 		        alert('test2'); 

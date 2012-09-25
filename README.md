@@ -82,7 +82,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	})
 	</pre>
 	
-+ 第二个参数为对象类型时可批量添加事件
++ 第二个参数为对象类型时可批量添加
 	<pre>
 	E.bind(el, {
 		mouseover: function() {

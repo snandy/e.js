@@ -94,7 +94,7 @@ function now() {
 	return (new Date).getTime()
 }
 function eventHandler(elem, e) {
-	var e      = fix(e || event),
+	var e      = fix(e),
 		type   = e.type,
 		id     = elem.guid,
 		elData = cache[id],
@@ -225,10 +225,10 @@ Event.prototype = {
 function fix(e) {
 	var i, prop, props = [], originalEvent = e
 	
-	props = props.concat('altKey attrChange attrName bubbles button cancelable charCode clientX clientY ctrlKey'.split(' '))
+	props = props.concat('altKey bubbles button cancelable charCode clientX clientY ctrlKey'.split(' '))
 	props = props.concat('currentTarget data detail eventPhase fromElement handler keyCode layerX layerY metaKey'.split(' '))
-	props = props.concat('newValue offsetX offsetY originalTarget pageX pageY prevValue relatedNode relatedTarget'.split(' '))
-	props = props.concat('screenX screenY shiftKey srcElement target toElement view wheelDelta which'.split(' '))
+	props = props.concat('newValue offsetX offsetY originalTarget pageX pageY prevValue relatedTarget'.split(' '))
+	props = props.concat('screenX screenY shiftKey target toElement view wheelDelta which'.split(' '))
 	
 	e = new Event(originalEvent)
 	for (i=props.length; i;) {
@@ -237,7 +237,7 @@ function fix(e) {
 	}
 	
 	if (!e.target) {
-		e.target = e.srcElement || document
+		e.target = originalEvent.srcElement || document
 	}
 	if (e.target.nodeType === 3) {
 		e.target = e.target.parentNode

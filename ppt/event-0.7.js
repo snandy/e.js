@@ -138,7 +138,7 @@ function now() {
 	return (new Date).getTime()
 }
 function eventHandler(elem, e) {
-	var e      = fix(e || event),
+	var e      = fix(e),
 		type   = e.type,
 		id     = elem.guid,
 		elData = cache[id],
@@ -254,10 +254,10 @@ Event.prototype = {
 function fix(e) {
 	var i, prop, props = [], originalEvent = e
 	
-	props = props.concat('altKey attrChange attrName bubbles button cancelable charCode clientX clientY ctrlKey'.split(' '))
-	props = props.concat('currentTarget data detail eventPhase fromElement handler keyCode layerX layerY metaKey'.split(' '))
-	props = props.concat('newValue offsetX offsetY originalTarget pageX pageY prevValue relatedNode relatedTarget'.split(' '))
-	props = props.concat('screenX screenY shiftKey srcElement target toElement view wheelDelta which'.split(' '))
+	props = props.concat('altKey bubbles button cancelable charCode clientX clientY ctrlKey currentTarget'.split(' '))
+	props = props.concat('data detail eventPhase fromElement handler keyCode layerX layerY metaKey'.split(' '))
+	props = props.concat('newValue offsetX offsetY originalTarget pageX pageY prevValue relatedTarget'.split(' '))
+	props = props.concat('screenX screenY shiftKey target toElement view wheelDelta which'.split(' '))
 	
 	e = new Event(originalEvent)
 	for (i=props.length; i;) {
@@ -266,7 +266,7 @@ function fix(e) {
 	}
 	
 	if (!e.target) {
-		e.target = e.srcElement || document
+		e.target = originalEvent.srcElement || document
 	}
 	if (e.target.nodeType === 3) {
 		e.target = e.target.parentNode
@@ -277,10 +277,10 @@ function fix(e) {
 	if (e.pageX == null && e.clientX != null) {
 		var doc = document.documentElement, body = document.body
 		e.pageX = e.clientX + 
-			(doc && doc.scrollLeft || body && body.scrollLeft || 0) - 
+			(doc && doc.scrollLeft || body && body.scrollLeft || 0) -
 			(doc && doc.clientLeft || body && body.clientLeft || 0)
 		e.pageY = e.clientY + 
-			(doc && doc.scrollTop  || body && body.scrollTop  || 0) - 
+			(doc && doc.scrollTop  || body && body.scrollTop  || 0) -
 			(doc && doc.clientTop  || body && body.clientTop  || 0)
 	}
 	if (!e.which && ((e.charCode || e.charCode === 0) ? e.charCode : e.keyCode)) {
@@ -304,6 +304,10 @@ function bind(elem, type, handler) {
 		events = elData.events,
 		handle = elData.handle,
 		handlerObj, eventType, i=0, arrType
+	
+	if (elem.nodeType === 3 || elem.nodeType === 8 || !type) {
+		return
+	}
 	
 	// 批量添加, 递归
 	if ( util.isObject(type) ) {
