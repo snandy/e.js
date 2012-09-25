@@ -35,7 +35,7 @@ var // 每个element上绑定的一个唯一属性，递增
 	// 优先使用标准API
 	w3c = !!window.addEventListener,
 	
-	trigger, util,	toString = Object.prototype.toString
+	util, toString = Object.prototype.toString, slice = Array.prototype.slice
 
 // utility functions -----------------------------------------------------------------------------
 util = {
@@ -137,8 +137,8 @@ function returnTrue() {
 function now() {
 	return (new Date).getTime()
 }
-function eventHandler(elem, e) {
-	var e      = fix(e),
+function excuteHandler(elem, e, args/*only for trigger*/) {
+	var e      = fix(e, elem),
 		type   = e.type,
 		id     = elem.guid,
 		elData = cache[id],
@@ -146,6 +146,9 @@ function eventHandler(elem, e) {
 		handlers = events[type]
 		
 	for (var i=0, handlerObj; handlerObj = handlers[i++];) {
+		if (args) {
+			handlerObj.args = handlerObj.args.concat(args)
+		}
 		callback(elem, type, e, handlerObj)
 	}
 }
@@ -221,8 +224,12 @@ function remove(elem, type, guid) {
 }
 // custom event class
 function Event(event) {
-	this.originalEvent = event
-	this.type          = event.type
+	if (event.type) {
+		this.originalEvent = event
+		this.type          = event.type
+	} else {
+		this.type = event
+	}
 	this.timeStamp     = now()
 }
 Event.prototype = {
@@ -251,7 +258,7 @@ Event.prototype = {
 	isImmediatePropagationStopped: returnFalse
 };
 // fix evnet object
-function fix(e) {
+function fix(e, elem) {
 	var i, prop, props = [], originalEvent = e
 	
 	props = props.concat('altKey bubbles button cancelable charCode clientX clientY ctrlKey currentTarget'.split(' '))
@@ -266,7 +273,7 @@ function fix(e) {
 	}
 	
 	if (!e.target) {
-		e.target = originalEvent.srcElement || document
+		e.target = originalEvent.srcElement || elem // elem for trigger event
 	}
 	if (e.target.nodeType === 3) {
 		e.target = e.target.parentNode
@@ -362,7 +369,7 @@ function bind(elem, type, handler) {
 	// 初始化handle
 	if (!handle) {
 		elData.handle = handle = function(e) {
-			eventHandler(elData.elem, e)
+			excuteHandler(elData.elem, e)
 		}
 	}
 	
@@ -396,15 +403,15 @@ function unbind(elem, type, handler) {
 	if (!id || !elData || !events) return
 	
 	switch (length) {
-		case 1 :
+		case 1:
 			for (var type in events) {
 				remove(elem, type, id)
 			}
 			break
-		case 2 :
+		case 2:
 			remove(elem, type, id)
 			break
-		case 3 :
+		case 3:
 			util.each(handlers, function(i, handlerObj) {
 				if (handlerObj.handler === handler) {
 					handlers.splice(i, 1)
@@ -419,19 +426,28 @@ function unbind(elem, type, handler) {
 }
 
 // fire event
-trigger = w3c ?
-	function(el, type) {
-		try {
-			var event = document.createEvent('Event')
-			event.initEvent(type,true,true)
-			el.dispatchEvent(event)
-		}catch(e){}
-	} :
-	function(el, type) {
-		try {
-			el.fireEvent('on'+type)
-		}catch(e){}
+function trigger(elem, type) {
+	if (elem.nodeType === 3 || elem.nodeType === 8) return
+	
+	var id       = elem.guid,
+		elData   = id && cache[id],
+		events   = elData && elData.events,
+		handlers = events && events[type],
+		args     = slice.call(arguments, 2),
+		length   = arguments.length
+	
+	switch (length) {
+		case 1: 
+			for (var type in events) {
+				excuteHandler(elem, type, args)
+			}
+			break;
+		case 2: 
+		default:
+			excuteHandler(elem, type, args)
 	}
+	
+}
 
 var E = {
 	on: bind,
