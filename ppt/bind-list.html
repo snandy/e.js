@@ -26,8 +26,8 @@
 		    function handler5(e){
 		        alert(e.data); 
 		    }
-		    //E.bind(el, 'click', handler1); 
-		    E.bind(el, 'click', {handler: handler2, once: true}); 
+		    E.bind(el, 'click', handler1); 
+		    //E.bind(el, 'click', {handler: handler2, once: true}); 
 		    // E.bind(el, 'click', {
 		    	// delay: 3000,
 		    	// args: [1,3],
@@ -48,7 +48,7 @@
 				handler: function() {
 					console.log(i++)
 				}
-			})
+			})
 		
 		</script>
 	</body>	

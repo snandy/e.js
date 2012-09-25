@@ -78,9 +78,9 @@ util = {
 	}(),
 	removeListener: function(){
 		if (w3c) {
-			return function(el, type, handler) { el.addEventListener(type, handler, false) }
+			return function(el, type, handler) { el.removeEventListener(type, handler, false) }
 		} else {
-			return function(el, type, handler) { el.attachEvent('on' + type, handler) }
+			return function(el, type, handler) { el.detachEvent('on' + type, handler) }
 		}
 	}()
 
@@ -179,13 +179,14 @@ function remove(elem, type, guid) {
 		handle = elData.handle,
 		events = elData.events
 	
+	// DOM中事件取消注册
+	util.removeListener(elem, type, handle)
+	
 	// 从缓存中删除指定类型事件相关数据
 	delete events[type]
 	delete elData.elem
 	delete elData.handle
 	
-	// DOM中事件取消注册
-	util.removeListener(elem, type, handle)
 	// events是空对象时，从cache中删除
 	if ( util.isEmpty(events) ) {
 		delete elData.events
@@ -388,12 +389,12 @@ var E = {
 	unbind: unbind,
 	fire: trigger,
 	trigger: trigger,
-	getCache: function() {
-		return cache
+	viewCache: function() {
+		if (window.console) {
+			console.log('guid: ' + guid)
+			console.log(cache)
+		}
 	},
-	getGuid: function() {
-		return guid
-	}
 }
 	
 if (typeof define === 'function' && define.amd) {

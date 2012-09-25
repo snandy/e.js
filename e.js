@@ -118,9 +118,9 @@ util = {
 	}(),
 	removeListener: function() {
 		if (w3c) {
-			return function(el, type, handler) { el.addEventListener(type, handler, false) }
+			return function(el, type, handler) { el.removeEventListener(type, handler, false) }
 		} else {
-			return function(el, type, handler) { el.attachEvent('on' + type, handler) }
+			return function(el, type, handler) { el.detachEvent('on' + type, handler) }
 		}
 	}()
 }
@@ -434,15 +434,15 @@ var E = {
 	unbind: unbind,
 	fire: trigger,
 	trigger: trigger,
-	getCache: function() {
-		return cache
-	},
-	getGuid: function() {
-		return guid
+	viewCache: function() {
+		if (window.console) {
+			console.log('guid: ' + guid)
+			console.log(cache)
+		}
 	},
 	destroy: function() {
 		for (var num in cache) {
-			var elData = cache[num], elem   = elData.elem
+			var elData = cache[num], elem = elData.elem
 			unbind(elem)
 		}
 		guid = 1

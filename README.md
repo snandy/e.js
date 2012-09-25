@@ -19,14 +19,9 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	E.trigger(elem, type)
 	</pre>
 
-+ 获取事件管理对象cache
++ 打印guid, cache. 可查看内部细节如guid表示添加事件的元素个数
 	<pre>
-	E.getCache()
-	</pre>
-
-+ 获取事件管理的GUID, 查看已添加事件的DOM元素数量
-	<pre>
-	E.getGuid()
+	E.viewCache()
 	</pre>
 	
 + 销毁所有的事件handler, 如在页面unload时. (谨慎操作)

@@ -12,6 +12,8 @@
  * 8, type支持以空格添加多个事件，如'mouseover mouseout'
  * 9, 第二个参数type为对象类型时批量添加
  * 10, handler执行模式once、delay等实现方式更改
+ * 11, viewCache查看guid, cache. 可查看内部细节如guid表示添加事件的元素个数
+ * 
  * 
  * 
  * 重构点：
@@ -118,9 +120,9 @@ util = {
 	}(),
 	removeListener: function() {
 		if (w3c) {
-			return function(el, type, handler) { el.addEventListener(type, handler, false) }
+			return function(el, type, handler) { el.removeEventListener(type, handler, false) }
 		} else {
-			return function(el, type, handler) { el.attachEvent('on' + type, handler) }
+			return function(el, type, handler) { el.detachEvent('on' + type, handler) }
 		}
 	}()
 }
@@ -434,15 +436,15 @@ var E = {
 	unbind: unbind,
 	fire: trigger,
 	trigger: trigger,
-	getCache: function() {
-		return cache
-	},
-	getGuid: function() {
-		return guid
+	viewCache: function() {
+		if (window.console) {
+			console.log('guid: ' + guid)
+			console.log(cache)
+		}
 	},
 	destroy: function() {
 		for (var num in cache) {
-			var elData = cache[num], elem   = elData.elem
+			var elData = cache[num], elem = elData.elem
 			unbind(elem)
 		}
 		guid = 1

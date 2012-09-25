@@ -25,9 +25,7 @@ var // 每个element上绑定的一个唯一属性，递增
 	cache = {},
 	
 	// 优先使用标准API
-	w3c = !!window.addEventListener,
-	
-	addListener, removeListener, trigger
+	w3c = !!window.addEventListener, addListener, removeListener, trigger
 
 // utility functions -----------------------------------------------------------------------------
 function each(arr, callback) {
