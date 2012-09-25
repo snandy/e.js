@@ -1,25 +1,8 @@
 /**
- * @snandy
- * 
- * 功能点：
- * 1, 统一elem作为事件handler执行上下文（attachEvent this是window）
- * 2, 统一事件对象作为handler第一个参数传入（attachEvent作为全局对象event）
- * 3, 统一多个handler执行顺序（attachEvent逆序）
- * 4, 解决事件对象兼容性（与W3C统一）
- * 5, handler执行模式配置: once/delay/debounce/throttle/context/stop/prevent/stopBubble
- * 6, handler传额外参数（非事件对象）
- * 7, 事件对象加data属性
- * 8, type支持以空格添加多个事件，如'mouseover mouseout'
- * 9, 第二个参数type为对象类型时批量添加
- * 10, handler执行模式once、delay等实现方式更改
- * 
- * 
- * 重构点：
- * 1, 勿重复检测浏览器
- * 2, 代码尽量不出现横向滚动条
- * 3, 接口bind, unbind, trigger各加别名on, un, fire
- * 4, AMD的支持
- * 
+ * e.js
+ * weibo: @snandy
+ * Blog: http://www.cnblogs.com/snandy
+ * Date: 2012-09-10
  */
 
 ~function(window, document) {
@@ -33,7 +16,7 @@ var // 每个element上绑定的一个唯一属性，递增
 	// 优先使用标准API
 	w3c = !!window.addEventListener,
 	
-	addListener, removeListener, trigger, util,	toString = Object.prototype.toString
+	trigger, util,	toString = Object.prototype.toString
 
 // utility functions -----------------------------------------------------------------------------
 util = {

@@ -31,9 +31,7 @@ var // 每个element上绑定的一个唯一属性，递增
 	// 优先使用标准API
 	w3c = !!window.addEventListener,
 	
-	addListener, removeListener, trigger, util,
-	
-	toString = Object.prototype.toString
+	trigger, util, toString = Object.prototype.toString
 
 // utility functions -----------------------------------------------------------------------------
 util = {
@@ -83,7 +81,6 @@ util = {
 			return function(el, type, handler) { el.detachEvent('on' + type, handler) }
 		}
 	}()
-
 }
 
 // private functions ---------------------------------------------------------------------------
