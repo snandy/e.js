@@ -24,9 +24,16 @@
  * 
  */
 
+/**
+ * e.js
+ * weibo: @snandy
+ * Blog: http://www.cnblogs.com/snandy
+ * Date: 2012-09-10
+ */
+
 ~function(window, document) {
 	
-// variables -------------------------------------------------------------------------------------
+// Variables -------------------------------------------------------------------------------------
 var // 每个element上绑定的一个唯一属性，递增
 	guid = 1,
 	// 存放所有事件handler, 以guid为key, cache[1] = {}
@@ -37,7 +44,7 @@ var // 每个element上绑定的一个唯一属性，递增
 	
 	util, toString = Object.prototype.toString, slice = Array.prototype.slice
 
-// utility functions -----------------------------------------------------------------------------
+// Utility functions -----------------------------------------------------------------------------
 util = {
 	each: function(arr, callback) {
 		for (var i=0; i<arr.length; i++) {
@@ -127,7 +134,7 @@ util = {
 	}()
 }
 
-// private functions ---------------------------------------------------------------------------
+// Private functions ---------------------------------------------------------------------------
 function returnFalse() {
 	return false
 }
@@ -228,7 +235,7 @@ function remove(elem, type, guid) {
 		delete cache[guid]
 	}
 }
-// custom event class
+// Custom event class
 function Event(event) {
 	var namespace
 	if (event.type) {
@@ -271,7 +278,7 @@ Event.prototype = {
 	isPropagationStopped: returnFalse,
 	isImmediatePropagationStopped: returnFalse
 };
-// fix evnet object
+// Fix evnet object
 function fix(e, elem) {
 	var i, prop, props = [], originalEvent = e
 	
@@ -317,8 +324,8 @@ function fix(e, elem) {
 	return e
 }
 
-// public functions -----------------------------------------------------------------------------
-// add event handler
+// Public functions -----------------------------------------------------------------------------
+// Add event handler
 function bind(elem, type, handler) {
 	var id     = elem.guid = elem.guid || guid++,
 		elData = cache[id] = cache[id] || {},
@@ -415,7 +422,7 @@ function bind(elem, type, handler) {
 	elem = null
 }
 
-// remove event handler
+// Remove event handler
 function unbind(elem, type, handler) {
 	var id       = elem.guid,
 		elData   = id && cache[id],
@@ -448,7 +455,7 @@ function unbind(elem, type, handler) {
 	}
 }
 
-// fire event
+// Fire event
 function trigger(elem, type) {
 	if (elem.nodeType === 3 || elem.nodeType === 8) return
 	
@@ -489,7 +496,8 @@ var E = {
 		guid = 1
 	}
 }
-	
+
+// Expose E to the global object or as AMD module
 if (typeof define === 'function' && define.amd) {
 	define('E', [], function () { return E } )
 } else {
