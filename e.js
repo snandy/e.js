@@ -16,7 +16,7 @@ var // 每个element上绑定的一个唯一属性，递增
 	// 优先使用标准API
 	w3c = !!window.addEventListener,
 	
-	trigger, util,	toString = Object.prototype.toString
+	util, toString = Object.prototype.toString, slice = Array.prototype.slice
 
 // utility functions -----------------------------------------------------------------------------
 util = {
@@ -68,15 +68,15 @@ util = {
 		}
 	},
 	throttle: function(func, wait) {
-		var context, args, timeout, throttling, more, result
-		var whenDone = util.debounce(function(){ more = throttling = false }, wait)
+		var context, args, timeout, throttling, more, result,
+			whenDone = util.debounce(function() {
+				more = throttling = false
+			}, wait)
 		return function() {
 			context = this, args = arguments
 			var later = function() {
 				timeout = null
-				if (more) {
-					func.apply(context, args)
-				}
+				if (more) func.apply(context, args)
 				whenDone()
 			}
 			if (!timeout) {
@@ -118,16 +118,25 @@ function returnTrue() {
 function now() {
 	return (new Date).getTime()
 }
-function eventHandler(elem, e) {
-	var e      = fix(e),
+function excuteHandler(elem, e, args/*only for trigger*/) {
+	var e      = fix(e, elem),
 		type   = e.type,
 		id     = elem.guid,
 		elData = cache[id],
 		events = elData.events,
 		handlers = events[type]
-		
+	
 	for (var i=0, handlerObj; handlerObj = handlers[i++];) {
-		callback(elem, type, e, handlerObj)
+		if (args) {
+			handlerObj.args = handlerObj.args.concat(args)
+		}
+		if (e.namespace) {
+			if (e.namespace===handlerObj.namespace) {
+				callback(elem, type, e, handlerObj)
+			} 
+		} else {
+			callback(elem, type, e, handlerObj)
+		}
 	}
 }
 function callback(elem, type, e, handlerObj) {
@@ -202,8 +211,20 @@ function remove(elem, type, guid) {
 }
 // custom event class
 function Event(event) {
-	this.originalEvent = event
-	this.type          = event.type
+	var namespace
+	if (event.type) {
+		this.originalEvent = event
+		this.type          = event.type
+	} else {
+		if (event.indexOf('.') > -1) {
+			namespace = event.split('.')
+			this.type = namespace[0]
+			this.namespace = namespace[1]
+		} else {
+			this.type = event
+			this.namespace = ''
+		}
+	}
 	this.timeStamp     = now()
 }
 Event.prototype = {
@@ -232,7 +253,7 @@ Event.prototype = {
 	isImmediatePropagationStopped: returnFalse
 };
 // fix evnet object
-function fix(e) {
+function fix(e, elem) {
 	var i, prop, props = [], originalEvent = e
 	
 	props = props.concat('altKey bubbles button cancelable charCode clientX clientY ctrlKey currentTarget'.split(' '))
@@ -247,7 +268,7 @@ function fix(e) {
 	}
 	
 	if (!e.target) {
-		e.target = originalEvent.srcElement || document
+		e.target = originalEvent.srcElement || elem // elem for trigger event
 	}
 	if (e.target.nodeType === 3) {
 		e.target = e.target.parentNode
@@ -258,10 +279,10 @@ function fix(e) {
 	if (e.pageX == null && e.clientX != null) {
 		var doc = document.documentElement, body = document.body
 		e.pageX = e.clientX + 
-			(doc && doc.scrollLeft || body && body.scrollLeft || 0) - 
+			(doc && doc.scrollLeft || body && body.scrollLeft || 0) -
 			(doc && doc.clientLeft || body && body.clientLeft || 0)
 		e.pageY = e.clientY + 
-			(doc && doc.scrollTop  || body && body.scrollTop  || 0) - 
+			(doc && doc.scrollTop  || body && body.scrollTop  || 0) -
 			(doc && doc.clientTop  || body && body.clientTop  || 0)
 	}
 	if (!e.which && ((e.charCode || e.charCode === 0) ? e.charCode : e.keyCode)) {
@@ -284,7 +305,11 @@ function bind(elem, type, handler) {
 		elData = cache[id] = cache[id] || {},
 		events = elData.events,
 		handle = elData.handle,
-		handlerObj, eventType, i=0, arrType
+		handlerObj, eventType, i=0, arrType, namespace
+	
+	if (elem.nodeType === 3 || elem.nodeType === 8 || !type) {
+		return
+	}
 	
 	// 批量添加, 递归
 	if ( util.isObject(type) ) {
@@ -339,7 +364,7 @@ function bind(elem, type, handler) {
 	// 初始化handle
 	if (!handle) {
 		elData.handle = handle = function(e) {
-			eventHandler(elData.elem, e)
+			excuteHandler(elData.elem, e)
 		}
 	}
 	
@@ -347,6 +372,15 @@ function bind(elem, type, handler) {
 	elData.elem = elem
 	
 	while ( eventType=arrType[i++] ) {
+		// Namespaced event handlers
+		if ( eventType.indexOf('.') > -1 ) {
+			namespace = type.split('.')
+			eventType = namespace[0]
+			handlerObj.namespace = namespace[1]
+		} else {
+			handlerObj.namespace = ''
+		}
+		
 		// 取指定类型事件(如click)的所有handlers, 如果有则是一个数组, 第一次是undefined则初始化为空数组
 		// 也仅在handlers为undefined时注册事件, 即每种类型事件仅注册一次, 再次添加handler只是push到数组handlers中
 		handlers  = events[eventType]
@@ -373,15 +407,15 @@ function unbind(elem, type, handler) {
 	if (!id || !elData || !events) return
 	
 	switch (length) {
-		case 1 :
+		case 1:
 			for (var type in events) {
 				remove(elem, type, id)
 			}
 			break
-		case 2 :
+		case 2:
 			remove(elem, type, id)
 			break
-		case 3 :
+		case 3:
 			util.each(handlers, function(i, handlerObj) {
 				if (handlerObj.handler === handler) {
 					handlers.splice(i, 1)
@@ -396,19 +430,25 @@ function unbind(elem, type, handler) {
 }
 
 // fire event
-trigger = w3c ?
-	function(el, type) {
-		try {
-			var event = document.createEvent('Event')
-			event.initEvent(type,true,true)
-			el.dispatchEvent(event)
-		}catch(e){}
-	} :
-	function(el, type) {
-		try {
-			el.fireEvent('on'+type)
-		}catch(e){}
+function trigger(elem, type) {
+	if (elem.nodeType === 3 || elem.nodeType === 8) return
+	
+	var id       = elem.guid,
+		elData   = id && cache[id],
+		events   = elData && elData.events,
+		handlers = events && events[type],
+		args     = slice.call(arguments, 2),
+		length   = arguments.length
+	
+	if (length===1 && elem.nodeType===1) {
+		for (var type in events) {
+			excuteHandler(elem, type, args)
+		}
+	} else {
+		excuteHandler(elem, type, args)
 	}
+	
+}
 
 var E = {
 	on: bind,
@@ -419,7 +459,6 @@ var E = {
 	trigger: trigger,
 	viewCache: function() {
 		if (window.console) {
-			console.log('guid: ' + guid)
 			console.log(cache)
 		}
 	},

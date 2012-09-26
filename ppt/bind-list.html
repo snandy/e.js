@@ -27,12 +27,13 @@
 		        alert(e.data); 
 		    }
 		    E.bind(el, 'click', handler1); 
-		    E.bind(el, 'click', {handler: handler2, once: true});
-		    E.bind(el, 'mouseover', handler3)
+		    // E.bind(el, 'click', {handler: handler2, once: true});
+		    // E.bind(el, 'mouseover', handler3)
 		    
+		    E.bind(el, 'click.a', handler2); 
 		    setTimeout(function() {
 		    	//E.fire(el, 'mouseover', {name: 'nick'})
-		    	E.fire(el)
+		    	E.fire(el, 'click.a')
 		    }, 3000)
 		     
 		    // E.bind(el, 'click', {

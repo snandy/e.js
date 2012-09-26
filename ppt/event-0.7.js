@@ -13,7 +13,7 @@
  * 9, 第二个参数type为对象类型时批量添加
  * 10, handler执行模式once、delay等实现方式更改
  * 11, viewCache查看guid, cache. 可查看内部细节如guid表示添加事件的元素个数
- * 
+ * 12, event namespace manager
  * 
  * 
  * 重构点：
@@ -87,15 +87,15 @@ util = {
 		}
 	},
 	throttle: function(func, wait) {
-		var context, args, timeout, throttling, more, result
-		var whenDone = util.debounce(function(){ more = throttling = false }, wait)
+		var context, args, timeout, throttling, more, result,
+			whenDone = util.debounce(function() {
+				more = throttling = false
+			}, wait)
 		return function() {
 			context = this, args = arguments
 			var later = function() {
 				timeout = null
-				if (more) {
-					func.apply(context, args)
-				}
+				if (more) func.apply(context, args)
 				whenDone()
 			}
 			if (!timeout) {
@@ -144,12 +144,18 @@ function excuteHandler(elem, e, args/*only for trigger*/) {
 		elData = cache[id],
 		events = elData.events,
 		handlers = events[type]
-		
+	
 	for (var i=0, handlerObj; handlerObj = handlers[i++];) {
 		if (args) {
 			handlerObj.args = handlerObj.args.concat(args)
 		}
-		callback(elem, type, e, handlerObj)
+		if (e.namespace) {
+			if (e.namespace===handlerObj.namespace) {
+				callback(elem, type, e, handlerObj)
+			} 
+		} else {
+			callback(elem, type, e, handlerObj)
+		}
 	}
 }
 function callback(elem, type, e, handlerObj) {
@@ -224,11 +230,19 @@ function remove(elem, type, guid) {
 }
 // custom event class
 function Event(event) {
+	var namespace
 	if (event.type) {
 		this.originalEvent = event
 		this.type          = event.type
 	} else {
-		this.type = event
+		if (event.indexOf('.') > -1) {
+			namespace = event.split('.')
+			this.type = namespace[0]
+			this.namespace = namespace[1]
+		} else {
+			this.type = event
+			this.namespace = ''
+		}
 	}
 	this.timeStamp     = now()
 }
@@ -310,7 +324,7 @@ function bind(elem, type, handler) {
 		elData = cache[id] = cache[id] || {},
 		events = elData.events,
 		handle = elData.handle,
-		handlerObj, eventType, i=0, arrType
+		handlerObj, eventType, i=0, arrType, namespace
 	
 	if (elem.nodeType === 3 || elem.nodeType === 8 || !type) {
 		return
@@ -377,6 +391,15 @@ function bind(elem, type, handler) {
 	elData.elem = elem
 	
 	while ( eventType=arrType[i++] ) {
+		// Namespaced event handlers
+		if ( eventType.indexOf('.') > -1 ) {
+			namespace = type.split('.')
+			eventType = namespace[0]
+			handlerObj.namespace = namespace[1]
+		} else {
+			handlerObj.namespace = ''
+		}
+		
 		// 取指定类型事件(如click)的所有handlers, 如果有则是一个数组, 第一次是undefined则初始化为空数组
 		// 也仅在handlers为undefined时注册事件, 即每种类型事件仅注册一次, 再次添加handler只是push到数组handlers中
 		handlers  = events[eventType]
@@ -436,15 +459,12 @@ function trigger(elem, type) {
 		args     = slice.call(arguments, 2),
 		length   = arguments.length
 	
-	switch (length) {
-		case 1: 
-			for (var type in events) {
-				excuteHandler(elem, type, args)
-			}
-			break;
-		case 2: 
-		default:
+	if (length===1 && elem.nodeType===1) {
+		for (var type in events) {
 			excuteHandler(elem, type, args)
+		}
+	} else {
+		excuteHandler(elem, type, args)
 	}
 	
 }
@@ -458,7 +478,6 @@ var E = {
 	trigger: trigger,
 	viewCache: function() {
 		if (window.console) {
-			console.log('guid: ' + guid)
 			console.log(cache)
 		}
 	},

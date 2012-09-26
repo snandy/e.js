@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>事件命名空间</title>
+		<script src="../e.js"></script>
+	</head>
+	<body>
+		<p id="p1" style="background:gold;">PPP</p>
+		<button>TEST</button>
+		<script>
+			var el = document.getElementById('p1')
+			var btn = document.getElementsByTagName('button')[0]
+			
+			function handler1() {
+				alert(1)
+			}
+			function handler2() {
+				alert(2)
+			}
+			
+			E.bind(el, 'click', handler1)
+			E.bind(el, 'click.handler2', handler2)
+			
+			E.bind(btn, 'click', function() {
+				E.trigger(el, 'click.handler2')
+			})
+		</script>
+	</body>	
+</html>

@@ -137,7 +137,7 @@ function returnTrue() {
 function now() {
 	return (new Date).getTime()
 }
-function eventHandler(elem, e) {
+function excuteHandler(elem, e) {
 	var e      = fix(e),
 		type   = e.type,
 		id     = elem.guid,
@@ -358,7 +358,7 @@ function bind(elem, type, handler) {
 	// 初始化handle
 	if (!handle) {
 		elData.handle = handle = function(e) {
-			eventHandler(elData.elem, e)
+			excuteHandler(elData.elem, e)
 		}
 	}
 	
@@ -438,7 +438,6 @@ var E = {
 	trigger: trigger,
 	viewCache: function() {
 		if (window.console) {
-			console.log('guid: ' + guid)
 			console.log(cache)
 		}
 	},

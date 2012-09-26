@@ -94,6 +94,18 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	})
 	</pre>
 	
+## 事件命名空间
++ 添加具有命名空间的事件
+	<pre>
+	E.bind(el, 'click.something', function() {
+		alert('event namespace')
+	})
+	</pre>
+
++ 派发具有命名空间的事件
+	<pre>
+	E.trigger(el, 'click.something')
+	</pre>
 
 ## 事件处理程序的行为
 + 仅执行一次
@@ -181,7 +193,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	E.bind(el, 'click', {
 		stop: true,
 		handler: function() {
-			console.log('Delay 3 seconds')
+			console.log('All stop')
 		}
 	})
 	</pre>
