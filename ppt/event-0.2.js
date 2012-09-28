@@ -8,7 +8,7 @@ var // 每个element上绑定的一个唯一属性，递增
 // utility functions -----------------------------------------------------------------------------
 function each(arr, callback) {
 	for (var i=0; i<arr.length; i++) {
-		if ( callback(i, arr[i]) === true ) return
+		if ( callback(arr[i], i) === true ) return
 	}
 }
 
@@ -107,7 +107,7 @@ function unbind(elem, type, handler) {
 			remove(elem, type, id)
 			break
 		case 3 :
-			each(handlers, function(i, item) {
+			each(handlers, function(item, i) {
 				if (item === handler) {
 					handlers.splice(i, 1)
 					return true

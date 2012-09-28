@@ -37,7 +37,7 @@ var // 每个element上绑定的一个唯一属性，递增
 util = {
 	each: function(arr, callback) {
 		for (var i=0; i<arr.length; i++) {
-			if ( callback(i, arr[i]) === true ) return
+			if ( callback(arr[i], i) === true ) return
 		}
 	},
 	isEmpty: function(obj) {
@@ -352,7 +352,7 @@ function unbind(elem, type, handler) {
 			remove(elem, type, id)
 			break
 		case 3 :
-			util.each(handlers, function(i, handlerObj) {
+			util.each(handlers, function(handlerObj, i) {
 				if (handlerObj.handler === handler) {
 					handlers.splice(i, 1)
 					return true
