@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>基本事件添加</title>
+		<script src="../e.js"></script>
+	</head>
+	<body>
+		<p id="p1" style="background:gold;">PPP</p> 
+		<script>
+			var el = document.getElementById('p1')
+			
+			function handler1() {
+				console.log(1)
+			}
+			// 简单的事件添加
+			E.bind(el, 'click', {
+				delay: 2000,
+				handler: handler1
+			})
+			
+			
+		</script>
+	</body>	
+</html>

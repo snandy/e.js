@@ -333,26 +333,31 @@ function bind(elem, type, handler) {
 	
 	// once 仅执行一次
 	if (handlerObj.once) {
+		handlerObj.special = handler
 		handlerObj.handler = util.once(handler)
 	}
 	
 	// delay延迟执行
 	if (handlerObj.delay) {
+		handlerObj.special = handler
 		handlerObj.handler = util.delay(handler, handlerObj.delay)
 	}
 	
 	// debounce防弹跳
 	if (handlerObj.debounce) {
+		handlerObj.special = handler
 		handlerObj.handler = util.debounce(handler, handlerObj.debounce)
 	}
 	
 	// immediate 执行后立即延迟指定时间，如避免重复提交
 	if (handlerObj.immediate) {
+		handlerObj.special = handler
 		handlerObj.handler = util.debounce(handler, handlerObj.immediate, true)
 	}
 	
 	// throttle 事件节流
 	if (handlerObj.throttle) {
+		handlerObj.special = handler
 		handlerObj.handler = util.throttle(handler, handlerObj.throttle)
 	}
 	
@@ -417,7 +422,7 @@ function unbind(elem, type, handler) {
 			break
 		case 3:
 			util.each(handlers, function(i, handlerObj) {
-				if (handlerObj.handler === handler) {
+				if (handlerObj.handler === handler || handlerObj.special === handler) {
 					handlers.splice(i, 1)
 					return true
 				}

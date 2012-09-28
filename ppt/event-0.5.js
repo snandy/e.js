@@ -296,6 +296,7 @@ function bind(elem, type, handler) {
 	
 	// 防弹跳
 	if (handlerObj.debounce) {
+		handlerObj.special = handlerObj.handler
 		handlerObj.handler = util.debounce(handlerObj.handler, handlerObj.debounce)
 	}
 	
