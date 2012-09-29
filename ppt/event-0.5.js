@@ -270,6 +270,10 @@ function fix(e) {
 // public functions -----------------------------------------------------------------------------
 // add event handler
 function bind(elem, type, handler) {
+	if (!elem || elem.nodeType === 3 || elem.nodeType === 8 || !type) {
+		return
+	}
+		
 	var id     = elem.guid = elem.guid || guid++,
 		elData = cache[id] = cache[id] || {},
 		events = elData.events,
@@ -334,13 +338,15 @@ function bind(elem, type, handler) {
 
 // remove event handler
 function unbind(elem, type, handler) {
+	if (!elem || elem.nodeType === 3 || elem.nodeType === 8) {
+		return
+	}
+		
 	var id       = elem.guid,
 		elData   = id && cache[id],
 		events   = elData && elData.events,
 		handlers = events && events[type],
 		length   = arguments.length
-	
-	if (!id || !elData || !events) return
 	
 	switch (length) {
 		case 1 :

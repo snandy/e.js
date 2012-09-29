@@ -24,13 +24,6 @@
  * 
  */
 
-/**
- * e.js
- * weibo: @snandy
- * Blog: http://www.cnblogs.com/snandy
- * Date: 2012-09-10
- */
-
 ~function(window, document) {
 	
 // Variables -------------------------------------------------------------------------------------
@@ -145,6 +138,8 @@ function now() {
 	return (new Date).getTime()
 }
 function excuteHandler(elem, e, args/*only for trigger*/) {
+	if (!elem || !e) return
+	
 	var e      = fix(e, elem),
 		type   = e.type,
 		id     = elem.guid,
@@ -327,15 +322,15 @@ function fix(e, elem) {
 // Public functions -----------------------------------------------------------------------------
 // Add event handler
 function bind(elem, type, handler) {
+	if (!elem || elem.nodeType === 3 || elem.nodeType === 8 || !type) {
+		return
+	}
+	
 	var id     = elem.guid = elem.guid || guid++,
 		elData = cache[id] = cache[id] || {},
 		events = elData.events,
 		handle = elData.handle,
 		handlerObj, eventType, i=0, arrType, namespace
-	
-	if (elem.nodeType === 3 || elem.nodeType === 8 || !type) {
-		return
-	}
 	
 	// 批量添加, 递归
 	if ( util.isObject(type) ) {
@@ -429,13 +424,15 @@ function bind(elem, type, handler) {
 
 // Remove event handler
 function unbind(elem, type, handler) {
+	if (!elem || elem.nodeType === 3 || elem.nodeType === 8) {
+		return
+	}
+	
 	var id       = elem.guid,
 		elData   = id && cache[id],
 		events   = elData && elData.events,
 		handlers = events && events[type],
 		length   = arguments.length
-	
-	if (!id || !elData || !events) return
 	
 	switch (length) {
 		case 1:
@@ -462,7 +459,9 @@ function unbind(elem, type, handler) {
 
 // Fire event
 function trigger(elem, type) {
-	if (elem.nodeType === 3 || elem.nodeType === 8) return
+	if (!elem || elem.nodeType === 3 || elem.nodeType === 8) {
+		return
+	}
 	
 	var id       = elem.guid,
 		elData   = id && cache[id],
@@ -478,7 +477,6 @@ function trigger(elem, type) {
 	} else {
 		excuteHandler(elem, type, args)
 	}
-	
 }
 
 var E = {
