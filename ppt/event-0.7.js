@@ -462,7 +462,6 @@ function trigger(elem, type) {
 	if (!elem || elem.nodeType === 3 || elem.nodeType === 8) {
 		return
 	}
-	
 	var id       = elem.guid,
 		elData   = id && cache[id],
 		events   = elData && elData.events,
@@ -502,7 +501,7 @@ var E = {
 
 // Expose E to the global object or as AMD module
 if (typeof define === 'function' && define.amd) {
-	define('E', [], function () { return E } )
+	define('E', [], function() { return E } )
 } else {
 	window.E = E
 }
