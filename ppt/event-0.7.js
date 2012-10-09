@@ -6,7 +6,7 @@
  * 2, 统一事件对象作为handler第一个参数传入（attachEvent作为全局对象event）
  * 3, 统一多个handler执行顺序（attachEvent逆序）
  * 4, 解决事件对象兼容性（与W3C统一）
- * 5, handler执行模式配置: once/delay/debounce/throttle/context/stop/prevent/stopBubble
+ * 5, handler执行模式配置: once/delay/debounce/immediate/throttle/context/stop/prevent/stopBubble
  * 6, handler传额外参数（非事件对象）
  * 7, 事件对象加data属性
  * 8, type支持以空格添加多个事件，如'mouseover mouseout'
@@ -14,7 +14,7 @@
  * 10, handler执行模式once、delay等实现方式更改
  * 11, viewCache查看guid, cache. 可查看内部细节如guid表示添加事件的元素个数
  * 12, event namespace manager
- * 13, 添加one方法
+ * 13, 添加one, debounce, immediate, throttle方法
  * 
  * 
  * 重构点：
