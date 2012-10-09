@@ -4,12 +4,12 @@
  * Blog: http://www.cnblogs.com/snandy
  * Date: 2012-09-10
  */
-
 ~function(window, document) {
 	
 // Variables -------------------------------------------------------------------------------------
-var // 每个element上绑定的一个唯一属性，递增
-	guid = 1,
+
+	// 每个element上绑定的一个唯一属性，递增
+var	guid = 1,
 	// 存放所有事件handler, 以guid为key, cache[1] = {}
 	// cache[1] = {handle: evnetHandle, events: {}}, events = {click: [handler1, handler2, ..]}
 	cache = {},
@@ -19,6 +19,7 @@ var // 每个element上绑定的一个唯一属性，递增
 	util, toString = Object.prototype.toString, slice = Array.prototype.slice
 
 // Utility functions -----------------------------------------------------------------------------
+
 util = {
 	each: function(arr, callback) {
 		for (var i=0; i<arr.length; i++) {
@@ -109,6 +110,7 @@ util = {
 }
 
 // Private functions ---------------------------------------------------------------------------
+
 function returnFalse() {
 	return false
 }
@@ -301,6 +303,7 @@ function fix(e, elem) {
 }
 
 // Public functions -----------------------------------------------------------------------------
+
 // Add event handler
 function bind(elem, type, handler) {
 	if (!elem || elem.nodeType === 3 || elem.nodeType === 8 || !type) {
@@ -466,6 +469,36 @@ var E = {
 	unbind: unbind,
 	fire: trigger,
 	trigger: trigger,
+	one: function(elem, type, handler) {
+		bind(elem, type, {
+			once: true,
+			handler: handler
+		})
+	},
+	delay: function(elem, type, handler, wait) {
+		bind(elem, type, {
+			delay: wait,
+			handler: handler
+		})
+	},
+	debounce: function(elem, type, handler, wait) {
+		bind(elem, type, {
+			debounce: wait,
+			handler: handler
+		})
+	},
+	immediate: function(elem, type, handler, wait) {
+		bind(elem, type, {
+			immediate: wait,
+			handler: handler
+		})
+	},
+	throttle: function(elem, type, handler, wait) {
+		bind(elem, type, {
+			throttle: wait,
+			handler: handler
+		})
+	},
 	viewCache: function() {
 		if (window.console) {
 			console.log(cache)
