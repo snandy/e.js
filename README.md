@@ -4,6 +4,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 提供多种方式添加事件，可对事件handler的行为进行特殊控制。如仅执行一次、延迟执行、事件节流、给其传非事件对象参数、数据对象等。
 
 ## API
+
 #### 添加事件E.bind, 别名E.on
 	<pre>
 	E.bind(elem, type, handler)
@@ -31,6 +32,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 
 
 ## 常见操作
+
 #### 简单事件添加
 	<pre>
 	E.bind(el, 'click', function() {
@@ -75,6 +77,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	
 
 ## 批量添加
+
 #### 空格间隔一次给多个事件添加
 	<pre>
 	E.bind(el, 'mouseover mouseout', function(e) {
@@ -95,6 +98,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	</pre>
 	
 ## 事件命名空间
+
 #### 添加具有命名空间的事件
 	<pre>
 	E.bind(el, 'click.something', function() {
@@ -108,6 +112,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	</pre>
 
 ## 事件处理程序的行为
+
 #### 仅执行一次
 	<pre>
 	E.bind(el, 'click', {
@@ -199,6 +204,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	</pre>
 	
 ## 数据传递
+
 #### 传参给事件处理程序
 	<pre>
 	E.bind(el, 'click', {
