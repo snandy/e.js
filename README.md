@@ -5,27 +5,32 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 
 ## API
 
-#### 添加事件E.bind, 别名E.on
+##### 添加事件E.bind, 别名E.on
+
 	<pre>
 	E.bind(elem, type, handler)
 	</pre>
 	
-#### 删除事件E.unbind, 别名E.un
+##### 删除事件E.unbind, 别名E.un
+
 	<pre>
 	E.unbind(elem, type, handler)
 	</pre>
 
-#### 派发事件E.trigger, 别名E.fire
+##### 派发事件E.trigger, 别名E.fire
+
 	<pre>
 	E.trigger(elem, type)
 	</pre>
 
-#### 打印guid, cache. 可查看内部细节如guid表示添加事件的元素个数
+##### 打印guid, cache. 可查看内部细节如guid表示添加事件的元素个数
+
 	<pre>
 	E.viewCache()
 	</pre>
 	
-#### 销毁所有的事件handler, 如在页面unload时. (谨慎操作)
+##### 销毁所有的事件handler, 如在页面unload时. (谨慎操作)
+
 	<pre>
 	E.destroy()
 	</pre>	
