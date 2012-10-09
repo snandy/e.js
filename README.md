@@ -180,3 +180,12 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	
 	// 派发所有事件
 	E.trigger(el)
+
+## 查看内部数据
+	
+	E.viewCache() // {1: {elem: xxx, events: {click: [], mouseover: []}}}
+	
+## 销毁内部数据
+	
+	// 如在页面unload时，主动清除所有事件绑定以释放内存
+	E.destroy()
