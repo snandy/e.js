@@ -38,26 +38,22 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 		console.log(this)
 	})
 
-###### 获取事件对象
-
+	// 获取事件对象
 	E.bind(el, 'click', function(e) {
 		console.log(e.type)
 	})
 
-###### 获取事件源对象
-
+	// 获取事件源对象
 	E.bind(el, 'click', function(e) {
 		console.log(e.target)
 	})
 	
-###### 阻止事件流传播
-
+	// 阻止事件流传播
 	E.bind(el, 'click', function(e) {
 		e.stopPropagation()
 	})
 	
-###### 阻止元素默认行为
-
+	// 阻止元素默认行为
 	E.bind(el, 'click', function(e) {
 		e.preventDefault()
 	})
