@@ -7,16 +7,16 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 
 ## API
 
-+ [E.bind/E.on]('')
-+ E.one
-+ E.delay
-+ E.debounce
-+ E.immediate
-+ E.throttle
-+ E.unbind/E.un
-+ E.trigger/E.fire
-+ E.viewCache
-+ E.destroy
++ [E.bind/E.on](常见操作)
++ [E.one](仅执行一次)
++ [E.delay](延迟执行)
++ [E.debounce](阻止handler频繁调用)
++ [E.immediate](类似debounce)
++ [E.throttle](事件节流)
++ [E.unbind/E.un]
++ [E.trigger/E.fire]
++ [E.viewCache]
++ [E.destroy]
 
 
 ## 常见操作
@@ -91,17 +91,20 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 		console.log('Delay 3 seconds')
 	}, 3000)
 
-###### 阻止handler频繁调用(resize, scroll, mousemove) 不足指定debounce时间时会clearTimeout上次的handler
+###### 阻止handler频繁调用
+	// 如事件(resize, scroll, mousemove) 不足指定debounce时间时会clearTimeout上次的handler
 	E.debounce(window, 'scroll', function() {
 		console.log('test')
 	}, 100)
 
-###### 与上面类似, 不同在于handler会立刻执行(如click提交点击太快造成提交多次)
+###### 类似debounce
+	// 不同在于handler会立刻执行(如click提交点击太快造成提交多次)
 	E.immediate(el, 'click', function() {
 		console.log('test')
 	}, 1000)
 
-###### 事件节流(resize, scroll, mousemove) 当handler被频繁调用时如scroll，可强制指定调用间隔时间，比如100毫秒
+###### 事件节流
+	// 如事件(resize, scroll, mousemove) 当handler被频繁调用时如scroll，可强制指定调用间隔时间，比如100毫秒
 	E.throttle(window, 'scroll', function() {
 		console.log('test')
 	}, 100)
