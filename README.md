@@ -13,10 +13,10 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 + [E.debounce](#阻止handler频繁调用)
 + [E.immediate](#类似debounce)
 + [E.throttle](#事件节流)
-+ [E.unbind/E.un]('')
-+ [E.trigger/E.fire]('')
-+ [E.viewCache]('')
-+ [E.destroy]('')
++ [E.unbind/E.un](#删除事件)
++ [E.trigger/E.fire](#派发事件)
++ [E.viewCache](#查看内部数据)
++ [E.destroy](#销毁内部数据)
 
 
 ## 常见操作
@@ -159,3 +159,24 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 		}
 	})
 
+## 删除事件
+
+	// 删除一个事件handler
+	E.unbind(el, 'click', handler)
+	
+	// 删除点击事件的所有handler
+	E.unbind(el, 'click')
+	
+	// 删除所有事件handler
+	E.unbind(el)
+
+## 派发事件
+	
+	// 派发点击事件
+	E.trigger(el, 'click')
+	
+	// 派发点击事件，同时传参
+	E.trigger(el, 'click', 'my data')
+	
+	// 派发所有事件
+	E.trigger(el)
