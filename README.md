@@ -7,9 +7,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 
 ##### 添加事件E.bind, 别名E.on
 
-	<pre>
 	E.bind(elem, type, handler)
-	</pre>
 	
 ##### 删除事件E.unbind, 别名E.un
 
