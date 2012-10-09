@@ -14,6 +14,7 @@
  * 10, handler执行模式once、delay等实现方式更改
  * 11, viewCache查看guid, cache. 可查看内部细节如guid表示添加事件的元素个数
  * 12, event namespace manager
+ * 13, 添加one方法
  * 
  * 
  * 重构点：
@@ -485,6 +486,12 @@ var E = {
 	unbind: unbind,
 	fire: trigger,
 	trigger: trigger,
+	one: function(elem, type, handler) {
+		bind(elem, type, {
+			once: true,
+			handler: handler
+		})
+	},
 	viewCache: function() {
 		if (window.console) {
 			console.log(cache)
