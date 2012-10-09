@@ -5,23 +5,12 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 
 ## API
 
-###### 添加事件E.bind, 别名E.on
-	E.bind(elem, type, handler)
-	
-###### 添加仅执行一次的事件E.one
-	E.one(elem, type, handler)
-	
-###### 删除事件E.unbind, 别名E.un
-	E.unbind(elem, type, handler)
-
-###### 派发事件E.trigger, 别名E.fire
-	E.trigger(elem, type)
-
-###### 打印guid, cache. 可查看内部细节如guid表示添加事件的元素个数
-	E.viewCache()
-	
-###### 销毁所有的事件handler, 如在页面unload时. (谨慎操作)
-	E.destroy()
++ E.bind/E.on
++ E.one
++ E.unbind/E.un
++ E.trigger/E.fire
++ E.viewCache
++ E.destroy
 
 
 ## 常见操作
