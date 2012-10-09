@@ -7,8 +7,12 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 
 ## API
 
-+ E.bind/E.on
++ [E.bind/E.on]('')
 + E.one
++ E.delay
++ E.debounce
++ E.immediate
++ E.throttle
 + E.unbind/E.un
 + E.trigger/E.fire
 + E.viewCache
