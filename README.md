@@ -28,14 +28,12 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 
 ## 常见操作
 
-###### 简单事件添加
-
+	// 简单事件添加
 	E.bind(el, 'click', function() {
 		console.log('click')
 	})
 
-###### handler上下文为el
-
+	// handler上下文为el
 	E.bind(el, 'click', function() {
 		console.log(this)
 	})
