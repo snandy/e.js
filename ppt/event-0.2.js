@@ -1,6 +1,9 @@
 
 var // 每个element上绑定的一个唯一属性，递增
 	guid = 1,
+	
+	guidStr = '__guid__',
+	
 	// 存放所有事件handler, 以guid为key, cache[1] = {}
 	// cache[1] = {handle: evnetHandle, events: {}}, events = {click: [handler1, handler2, ..]}
 	cache = {}
@@ -24,7 +27,7 @@ function eventHandler(e) {
 	e = e || event
 	
 	var type   = e.type,
-		id     = this.guid,
+		id     = this[guidStr],
 		elData = cache[id],
 		events = elData.events,
 		handlers = events[type]
@@ -55,7 +58,7 @@ function remove(elem, type, guid) {
 // public functions -----------------------------------------------------------------------------
 // add event handler
 function bind(elem, type, handler) {
-	var id     = elem.guid = elem.guid || guid++,
+	var id     = elem[guidStr] = elem[guidStr] || guid++,
 		elData = cache[id] = cache[id] || {},
 		events = elData.events,
 		handle = elData.handle
@@ -88,7 +91,7 @@ function bind(elem, type, handler) {
 
 // remove event handler
 function unbind(elem, type, handler) {
-	var id = elem.guid
+	var id = elem[guidStr]
 	
 	if (!id) return
 	
