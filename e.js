@@ -5,7 +5,7 @@
  * Date: 2012-09-10
  */
 
-~function(window, document) {
+~function(window, document, undefined) {
 	
 // Variables -------------------------------------------------------------------------------------
 
