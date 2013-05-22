@@ -469,7 +469,7 @@ function trigger(elem, type) {
 var E = {
 	on: bind,
 	bind: bind,
-	un: unbind,
+	off: unbind,
 	unbind: unbind,
 	fire: trigger,
 	trigger: trigger,
