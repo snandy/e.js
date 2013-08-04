@@ -10,7 +10,7 @@
 // Variables -------------------------------------------------------------------------------------
 
     // 每个element上绑定的一个唯一属性，递增
-var    guid = 1,
+var guid = 1,
 
     guidStr = '__guid__',
         
@@ -31,9 +31,7 @@ util = {
         }
     },
     isEmpty: function(obj) {
-        for (var a in obj) {
-            return false
-        }
+        for (var a in obj) return false
         return true
     },
     isFunction: function(obj) {
@@ -84,9 +82,8 @@ util = {
                 if (more) func.apply(context, args)
                 whenDone()
             }
-            if (!timeout) {
-                timeout = setTimeout(later, wait)
-            }
+            if (!timeout) timeout = setTimeout(later, wait)
+            
             if (throttling) {
                 more = true
             } else {
@@ -124,7 +121,7 @@ function returnTrue() {
 function now() {
     return (new Date).getTime()
 }
-function excuteHandler(elem, e, args/*only for trigger*/) {
+function excuteHandler(elem, e, args /*only for trigger*/) {
     if (!elem || !e) return
     
     var e      = fix(e, elem),
@@ -169,17 +166,11 @@ function callback(elem, type, e, handlerObj) {
         e.stopPropagation()
     }
     
-    if (prevent) {
-        e.preventDefault()
-    }
+    if (prevent) e.preventDefault()
     
-    if (data) {
-        e.data = data
-    }
+    if (data) e.data = data
     
-    if (stopBubble) {
-        e.stopPropagation()
-    }
+    if (stopBubble) e.stopPropagation()
     
     handler.apply(context, args)
 }
@@ -233,7 +224,7 @@ function Event(event) {
             this.namespace = ''
         }
     }
-    this.timeStamp     = now()
+    this.timeStamp = now()
 }
 Event.prototype = {
     preventDefault: function() {
@@ -412,9 +403,7 @@ function bind(elem, type, handler) {
 
 // Remove event handler
 function unbind(elem, type, handler) {
-    if (!elem || elem.nodeType === 3 || elem.nodeType === 8) {
-        return
-    }
+    if (!elem || elem.nodeType === 3 || elem.nodeType === 8) return
     
     var id       = elem[guidStr],
         elData   = id && cache[id],
@@ -424,9 +413,7 @@ function unbind(elem, type, handler) {
     
     switch (length) {
         case 1:
-            for (var type in events) {
-                remove(elem, type, id)
-            }
+            for (var type in events) remove(elem, type, id)
             break
         case 2:
             remove(elem, type, id)
@@ -438,18 +425,15 @@ function unbind(elem, type, handler) {
                     return true
                 }
             })
-            if (handlers.length === 0) {
-                remove(elem, type, id)
-            }
+            if (handlers.length === 0) remove(elem, type, id)
             break
     }
 }
 
 // Fire event
 function trigger(elem, type) {
-    if (!elem || elem.nodeType === 3 || elem.nodeType === 8) {
-        return
-    }
+    if (!elem || elem.nodeType === 3 || elem.nodeType === 8) return
+
     var id       = elem[guidStr],
         elData   = id && cache[id],
         events   = elData && elData.events,
@@ -458,9 +442,7 @@ function trigger(elem, type) {
         length   = arguments.length
     
     if (length===1 && elem.nodeType===1) {
-        for (var type in events) {
-            excuteHandler(elem, type, args)
-        }
+        for (var type in events) excuteHandler(elem, type, args)
     } else {
         excuteHandler(elem, type, args)
     }
