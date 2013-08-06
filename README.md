@@ -1,4 +1,4 @@
-# e.js
+# E.js
 
 e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handler上下文为window，事件对象为全局的event。
 阻止事件传播方式，元素默认行为等也与标准浏览器不同，attachEvent添加多个handler时执行逆序等。修复了事件对象，使用符合w3c标准的统一的方式操作。
@@ -19,7 +19,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 + [E.destroy](#销毁内部数据)
 
 
-## 常见操作
+### 常见操作
 
 	// 简单事件添加
 	E.bind(el, 'click', function() {
@@ -52,7 +52,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	})
 	
 
-## 批量添加
+### 批量添加
 
 	// 空格间隔一次给多个事件添加
 	E.bind(el, 'mouseover mouseout', function(e) {
@@ -69,7 +69,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 		}
 	})
 	
-## 事件命名空间
+### 事件命名空间
 
 	// 添加具有命名空间的事件
 	E.bind(el, 'click.something', function() {
@@ -79,7 +79,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	// 派发具有命名空间的事件
 	E.trigger(el, 'click.something')
 
-## 事件处理程序的行为
+### 事件处理程序的行为
 
 ###### 仅执行一次
 	E.one(el, 'click', function() {
@@ -141,7 +141,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 		}
 	})
 	
-## 数据传递
+### 数据传递
 
 	// 传参给事件处理程序
 	E.bind(el, 'click', {
@@ -159,7 +159,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 		}
 	})
 
-## 删除事件
+### 删除事件
 
 	// 删除一个事件handler
 	E.unbind(el, 'click', handler)
@@ -170,7 +170,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	// 删除所有事件handler
 	E.unbind(el)
 
-## 派发事件
+### 派发事件
 	
 	// 派发点击事件
 	E.trigger(el, 'click')
@@ -181,11 +181,11 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	// 派发所有事件
 	E.trigger(el)
 
-## 查看内部数据
+### 查看内部数据
 	
 	E.viewCache() // {1: {elem: xxx, events: {click: [], mouseover: []}}}
 	
-## 销毁内部数据
+### 销毁内部数据
 	
 	// 如在页面unload时，主动清除所有事件绑定以释放内存
 	E.destroy()
