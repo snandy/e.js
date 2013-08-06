@@ -19,27 +19,26 @@ var guid = 1,
     cache = {},
     // 优先使用标准API
     w3c = !!window.addEventListener,
-    
-    util, toString = Object.prototype.toString, slice = Array.prototype.slice
+    slice = Array.prototype.slice,
+    toString = Object.prototype.toString
 
 // Utility functions -----------------------------------------------------------------------------
-
-util = {
-    each: function(arr, callback) {
-        for (var i=0; i<arr.length; i++) {
-            if ( callback(arr[i], i) === true ) return
-        }
-    },
-    isEmpty: function(obj) {
-        for (var a in obj) return false
-        return true
-    },
-    isFunction: function(obj) {
-        return toString.call(obj) == '[object Function]'
-    },
-    isObject: function(obj) {
-        return obj === Object(obj)
-    },
+function each(arr, callback) {
+    for (var i=0; i<arr.length; i++) {
+        if ( callback(arr[i], i) === true ) return
+    }
+}
+function isEmpty(obj) {
+    for (var a in obj) return false
+    return true
+}
+function isFunction(obj) {
+    return toString.call(obj) === '[object Function]'
+}
+function isObject(obj) {
+    return obj === Object(obj)
+}
+var util = {
     once: function(func) {
         var run, memo
         return function() {
@@ -71,8 +70,8 @@ util = {
         }
     },
     throttle: function(func, wait) {
-        var context, args, timeout, throttling, more, result,
-            whenDone = util.debounce(function() {
+        var context, args, timeout, throttling, more, result
+        var whenDone = util.debounce(function() {
                 more = throttling = false
             }, wait)
         return function() {
@@ -203,7 +202,7 @@ function remove(elem, type, guid) {
     // DOM中事件取消注册
     util.removeListener(elem, type, handle)
     // events是空对象时，从cache中删除
-    if ( util.isEmpty(events) ) {
+    if ( isEmpty(events) ) {
         delete elData.events
         delete cache[guid]
     }
@@ -312,7 +311,7 @@ function bind(elem, type, handler) {
         handlerObj, eventType, i=0, arrType, namespace
     
     // 批量添加, 递归
-    if ( util.isObject(type) ) {
+    if ( isObject(type) ) {
         for (eventType in type) {
             bind(elem, eventType, type[eventType])
         }
@@ -322,10 +321,10 @@ function bind(elem, type, handler) {
     }
     
     // handle parameter handler
-    if ( util.isFunction(handler) ) {
+    if ( isFunction(handler) ) {
         handlerObj = new Handler({handler: handler})
     } else {
-        if ( !util.isFunction(handler.handler) ) return
+        if ( !isFunction(handler.handler) ) return
         handlerObj = new Handler(handler)
     }
     
@@ -419,7 +418,7 @@ function unbind(elem, type, handler) {
             remove(elem, type, id)
             break
         case 3:
-            util.each(handlers, function(handlerObj, i) {
+            each(handlers, function(handlerObj, i) {
                 if (handlerObj.handler === handler || handlerObj.special === handler) {
                     handlers.splice(i, 1)
                     return true
