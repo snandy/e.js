@@ -188,7 +188,9 @@ function Handler(config) {
     this.data       = config.data
     if (config.args) {
         this.args = config.args.length ? config.args : [config.args]
-    }    
+    } else {
+        this.args = []
+    }
 }
 // 删除事件的注册，从缓存中去除
 function remove(elem, type, guid) {
