@@ -185,8 +185,10 @@ function Handler(config) {
     this.stop      = config.stop
     this.prevent   = config.prevent
     this.stopBubble = config.stopBubble
-    this.args       = config.args || []
     this.data       = config.data
+    if (config.args) {
+        this.args = config.args.length ? config.args : [config.args]
+    }    
 }
 // 删除事件的注册，从缓存中去除
 function remove(elem, type, guid) {
