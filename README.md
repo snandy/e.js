@@ -159,7 +159,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 		}
 	})
 
-### 删除事件 (Remove an event handler)
+#### 删除事件 (Remove an event handler)
 
 	// 删除一个事件handler
 	E.unbind(el, 'click', handler)
@@ -170,7 +170,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	// 删除所有事件handler
 	E.unbind(el)
 
-### 派发事件 (Execute all handlers to the element for the given event type)
+#### 派发事件 (Execute all handlers to the element for the given event type)
 	
 	// 派发点击事件
 	E.trigger(el, 'click')
@@ -181,11 +181,11 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	// 派发所有事件
 	E.trigger(el)
 
-### 查看内部数据
+#### 查看内部数据
 	
 	E.viewCache() // {1: {elem: xxx, events: {click: [], mouseover: []}}}
 	
-### 销毁内部数据
+#### 销毁内部数据
 	
 	// 如在页面unload时，主动清除所有事件绑定以释放内存
 	E.destroy()
