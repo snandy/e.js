@@ -19,7 +19,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 + [E.destroy](#销毁内部数据)
 
 
-### 常见操作 (Common operation)
+#### 常见操作 (Common operation)
 
 	// 简单事件添加
 	E.bind(el, 'click', function() {
@@ -52,7 +52,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	})
 	
 
-### 批量添加 (Attach more events to the element)
+#### 批量添加 (Attach more events to the element)
 
 	// 空格间隔一次给多个事件添加
 	E.bind(el, 'mouseover mouseout', function(e) {
@@ -69,7 +69,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 		}
 	})
 	
-### 事件命名空间 (Event names and namespaces)
+#### 事件命名空间 (Event names and namespaces)
 
 	// 添加具有命名空间的事件
 	E.bind(el, 'click.something', function() {
@@ -79,7 +79,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	// 派发具有命名空间的事件
 	E.trigger(el, 'click.something')
 
-### 事件处理程序的行为
+#### 事件处理程序的行为
 
 ###### 仅执行一次
 	E.one(el, 'click', function() {
@@ -141,7 +141,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 		}
 	})
 	
-### 数据传递 (Passing data to the handler)
+#### 数据传递 (Passing data to the handler)
 
 	// 传参给事件处理程序
 	E.bind(el, 'click', {
