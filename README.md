@@ -170,7 +170,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	// 删除所有事件handler
 	E.unbind(el)
 
-### 派发事件 (Execute all handlers and behaviors attached to element for the given event type)
+### 派发事件 (Execute all handlers to the element for the given event type)
 	
 	// 派发点击事件
 	E.trigger(el, 'click')
