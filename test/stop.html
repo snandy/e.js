@@ -7,15 +7,32 @@
 	</head>
 	<body>
 		<p id="p1" style="background:gold;">PPP</p>
+        <p><input id="ipt"></p>
 		<script>
 			var el = document.getElementById('p1')
-			
 			E.bind(el, 'click', {
 				stop: true,
 				handler: function() {
 					console.log('Stop all')
 				}
 			})
+
+            var input = document.getElementById('ipt')
+            E.bind(input, 'keydown', function(e) {
+                var keyCode = e.keyCode
+                if ( !isNumber(keyCode) ) return false
+            })
+
+            // 仅能输入数字
+            function isNumber(keyCode) {
+                // 数字
+                if (keyCode >= 48 && keyCode <= 57 ) return true
+                // 小数字键盘
+                if (keyCode >= 96 && keyCode <= 105) return true
+                // Backspace键
+                if (keyCode == 8) return true
+                return false
+            }   
 		</script>
 	</body>	
 </html>
