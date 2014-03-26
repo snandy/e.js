@@ -7,19 +7,19 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 
 ## API
 
-+ [E.bind/E.on](#常见操作)
-+ [E.one](#仅执行一次)
-+ [E.delay](#延迟执行)
-+ [E.debounce](#阻止handler频繁调用)
-+ [E.immediate](#类似debounce)
-+ [E.throttle](#事件节流)
-+ [E.unbind/E.un](#删除事件)
-+ [E.trigger/E.fire](#派发事件)
-+ [E.viewCache](#查看内部数据)
-+ [E.destroy](#销毁内部数据)
++ [E.bind/E.on](#common)
++ [E.one](#one)
++ [E.delay](#delay)
++ [E.debounce](#debounce)
++ [E.immediate](#immediate)
++ [E.throttle](#throttle)
++ [E.unbind/E.un](#unbind)
++ [E.trigger/E.fire](#trigger)
++ [E.viewCache](#viewCache)
++ [E.destroy](#destroy)
 
 
-#### 常见操作 (Common operation)
+<h4 id="common">常见操作</h4>
 
 	// 简单事件添加
 	E.bind(el, 'click', function() {
@@ -52,7 +52,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	})
 	
 
-#### 批量添加 (Attach more events to the element)
+<h4>批量添加</h4>
 
 	// 空格间隔一次给多个事件添加
 	E.bind(el, 'mouseover mouseout', function(e) {
