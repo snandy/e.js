@@ -19,7 +19,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 + [E.destroy](#destroy)
 
 
-<h4 id="common">常见操作</h4>
+#### 常见操作 (Common operation)
 
 	// 简单事件添加
 	E.bind(el, 'click', function() {
@@ -52,7 +52,7 @@ e.js解决了各浏览器的兼容性问题。如attachEvent IE6、7、8中handl
 	})
 	
 
-<h4>批量添加</h4>
+#### 批量添加 (Attach more events to the element)
 
 	// 空格间隔一次给多个事件添加
 	E.bind(el, 'mouseover mouseout', function(e) {
