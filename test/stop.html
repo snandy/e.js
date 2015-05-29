@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8"/>
-		<title>延迟事件处理程序执行</title>
+		<title>利用Keydown事件阻止用户输入</title>
 		<script src="../e.js"></script>
 	</head>
 	<body>
@@ -22,7 +22,6 @@
                 var keyCode = e.keyCode
                 if ( !isNumber(keyCode) ) return false
             })
-
             input.onkeydow = function(e) {
                 var keyCode = e.keyCode
                 if ( !isNumber(keyCode) ) return false            
