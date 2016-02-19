@@ -18,22 +18,22 @@
 			})
 
             var input = document.getElementById('ipt')
-            E.bind(input, 'keydown', function(e) {
-                var keyCode = e.keyCode
-                if ( !isNumber(keyCode) ) return false
-            })
-            input.onkeydow = function(e) {
+            // E.bind(input, 'keydown', function(e) {
+            //     var keyCode = e.keyCode
+            //     if ( !isNumber(keyCode) ) return false
+            // })
+            input.onkeydown = function(e) {
                 var keyCode = e.keyCode
                 if ( !isNumber(keyCode) ) return false            
             }
             // 仅能输入数字
-            function isNumber(keyCode) {
+            function isNumber(code) {
                 // 数字
-                if (keyCode >= 48 && keyCode <= 57 ) return true
+                if (code >= 48 && code <= 57 ) return true
                 // 小数字键盘
-                if (keyCode >= 96 && keyCode <= 105) return true
-                // Backspace键
-                if (keyCode == 8) return true
+                if (code >= 96 && code <= 105) return true
+                // Backspace, del, 左右方向键
+                if (code == 8 || code == 46 || code == 37 || code == 39) return true
                 return false
             }
 		</script>
